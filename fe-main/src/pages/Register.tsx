@@ -35,9 +35,9 @@ const Register = () => {
 
   return (
     <div className="max-w-md mx-auto mt-12">
-      <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+      <div className="bg-white p-8 rounded-2xl shadow-xl border border-[#b9a779]/30">
         <div className="text-center mb-8">
-          <h2 className="text-4xl font-bold text-gray-900 mb-2">إنشاء حساب جديد</h2>
+          <h2 className="text-4xl font-bold text-[#06332c] mb-2">إنشاء حساب جديد</h2>
           <p className="text-gray-600">انضم إلينا اليوم</p>
         </div>
 
@@ -49,36 +49,36 @@ const Register = () => {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-gray-800 font-semibold mb-2">الاسم الكامل</label>
+            <label className="block text-[#06332c] font-semibold mb-2">الاسم الكامل</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#b9a779] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
               placeholder="أدخل اسمك الكامل"
               required
             />
           </div>
 
           <div>
-            <label className="block text-gray-800 font-semibold mb-2">البريد الإلكتروني</label>
+            <label className="block text-[#06332c] font-semibold mb-2">البريد الإلكتروني</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#b9a779] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
               placeholder="example@email.com"
               required
             />
           </div>
 
           <div>
-            <label className="block text-gray-800 font-semibold mb-2">كلمة المرور</label>
+            <label className="block text-[#06332c] font-semibold mb-2">كلمة المرور</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#b9a779] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
               placeholder="••••••••"
               required
             />
@@ -86,12 +86,12 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="block text-gray-800 font-semibold mb-2">تأكيد كلمة المرور</label>
+            <label className="block text-[#06332c] font-semibold mb-2">تأكيد كلمة المرور</label>
             <input
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#b9a779] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
               placeholder="••••••••"
               required
             />
@@ -100,7 +100,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-linear-to-r from-blue-600 to-blue-700 text-white py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            className="w-full bg-linear-to-r from-[#06332c] to-[#0a4a40] text-white py-3 rounded-xl hover:from-[#0a4a40] hover:to-[#06332c] disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
             {isLoading ? 'جاري إنشاء الحساب...' : 'إنشاء حساب'}
           </button>
@@ -109,7 +109,7 @@ const Register = () => {
         <div className="mt-6 text-center">
           <p className="text-gray-600">
             لديك حساب بالفعل؟{' '}
-            <Link to="/login" className="text-blue-600 hover:text-blue-700 font-semibold hover:underline">
+            <Link to="/login" className="text-[#06332c] hover:text-[#0a4a40] font-semibold hover:underline">
               تسجيل الدخول
             </Link>
           </p>

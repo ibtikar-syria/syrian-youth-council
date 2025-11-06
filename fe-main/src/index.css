@@ -21,6 +21,6 @@ html {
 
 /* Better focus states */
 *:focus-visible {
-  outline: 2px solid rgb(59, 130, 246);
+  outline: 2px solid #b9a779;
   outline-offset: 2px;
 }
