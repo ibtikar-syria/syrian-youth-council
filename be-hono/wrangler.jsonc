@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "be-hono",
+  "name": "syrian-youth-council-backend",
   "main": "src/index.ts",
   "compatibility_date": "2025-11-06",
   "compatibility_flags": [
