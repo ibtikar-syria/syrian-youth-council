@@ -56,7 +56,7 @@ const CreateRequest = () => {
             <select
               value={type}
               onChange={(e) => setType(e.target.value)}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#06332c]"
             >
               <option value="public_request">طلب عام</option>
               <option value="direct_request">طلب مباشر (للقيادات الشبابية)</option>
@@ -69,7 +69,7 @@ const CreateRequest = () => {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#06332c]"
               placeholder="اكتب عنواناً واضحاً لطلبك"
               required
               minLength={5}
@@ -81,7 +81,7 @@ const CreateRequest = () => {
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 h-48"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#06332c] h-48"
               placeholder="اشرح طلبك بالتفصيل..."
               required
               minLength={20}
@@ -91,7 +91,7 @@ const CreateRequest = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 disabled:bg-gray-400"
+            className="w-full bg-[#06332c] text-white py-3 rounded-md hover:bg-[#0a4a40] disabled:bg-gray-400"
           >
             {loading ? 'جاري الإرسال...' : 'إرسال الطلب'}
           </button>

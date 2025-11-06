@@ -80,7 +80,7 @@ const MyRequests = () => {
           <p className="text-gray-600 text-lg mb-4">لم ترسل أي طلبات بعد</p>
           <a
             href="/create-request"
-            className="inline-block bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
+            className="inline-block bg-[#06332c] text-white px-6 py-2 rounded-md hover:bg-[#0a4a40]"
           >
             إرسال طلب جديد
           </a>
