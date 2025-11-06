@@ -2,37 +2,23 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "be-hono",
   "main": "src/index.ts",
-  "compatibility_date": "2025-11-06"
-  // "compatibility_flags": [
-  //   "nodejs_compat"
-  // ],
-  // "vars": {
-  //   "MY_VAR": "my-variable"
-  // },
-  // "kv_namespaces": [
-  //   {
-  //     "binding": "MY_KV_NAMESPACE",
-  //     "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-  //   }
-  // ],
-  // "r2_buckets": [
-  //   {
-  //     "binding": "MY_BUCKET",
-  //     "bucket_name": "my-bucket"
-  //   }
-  // ],
-  // "d1_databases": [
-  //   {
-  //     "binding": "MY_DB",
-  //     "database_name": "my-database",
-  //     "database_id": ""
-  //   }
-  // ],
-  // "ai": {
-  //   "binding": "AI"
-  // },
-  // "observability": {
-  //   "enabled": true,
-  //   "head_sampling_rate": 1
-  // }
+  "compatibility_date": "2025-11-06",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "vars": {
+    "JWT_SECRET": "your-secret-key-change-in-production",
+    "DEEPSEEK_API_KEY": "your-deepseek-api-key"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "syrian-youth-council-db",
+      "database_id": "49847296-c53e-46b7-8264-08a34e2f2c81",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "triggers": {
+    "crons": ["0 * * * *"]
+  }
 }
