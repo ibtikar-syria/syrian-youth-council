@@ -14,6 +14,7 @@ const ManageUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -37,17 +38,43 @@ const ManageUsers = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await api.post('/users', { name, email, password, role });
-      alert('تم إضافة المستخدم بنجاح');
+      if (editingUser) {
+        // Update existing user
+        await api.put(`/users/${editingUser.id}`, { name, email, role });
+        alert('تم تحديث المستخدم بنجاح');
+      } else {
+        // Create new user
+        await api.post('/users', { name, email, password, role });
+        alert('تم إضافة المستخدم بنجاح');
+      }
       setShowForm(false);
+      setEditingUser(null);
       setName('');
       setEmail('');
       setPassword('');
       setRole('basic_user');
       fetchUsers();
     } catch (err: any) {
-      alert(err.response?.data?.error || 'فشل إضافة المستخدم');
+      alert(err.response?.data?.error || 'فشلت العملية');
     }
+  };
+
+  const handleEdit = (user: User) => {
+    setEditingUser(user);
+    setName(user.name);
+    setEmail(user.email);
+    setRole(user.role);
+    setPassword('');
+    setShowForm(true);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingUser(null);
+    setName('');
+    setEmail('');
+    setPassword('');
+    setRole('basic_user');
+    setShowForm(false);
   };
 
   const handleDelete = async (id: number) => {
@@ -86,7 +113,10 @@ const ManageUsers = () => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-4xl font-bold">إدارة المستخدمين</h1>
         <button
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => {
+            setShowForm(!showForm);
+            if (showForm) handleCancelEdit();
+          }}
           className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
         >
           {showForm ? 'إلغاء' : 'إضافة مستخدم جديد'}
@@ -95,7 +125,9 @@ const ManageUsers = () => {
 
       {showForm && (
         <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-2xl font-bold mb-4">مستخدم جديد</h2>
+          <h2 className="text-2xl font-bold mb-4">
+            {editingUser ? 'تعديل المستخدم' : 'مستخدم جديد'}
+          </h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 mb-2">الاسم</label>
@@ -126,8 +158,9 @@ const ManageUsers = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-2 border rounded-md"
-                required
+                required={!editingUser}
                 minLength={8}
+                placeholder={editingUser ? 'اتركه فارغاً للإبقاء على الحالي' : ''}
               />
             </div>
 
@@ -149,7 +182,7 @@ const ManageUsers = () => {
               type="submit"
               className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
             >
-              إضافة
+              {editingUser ? 'تحديث' : 'إضافة'}
             </button>
           </form>
         </div>
@@ -176,6 +209,12 @@ const ManageUsers = () => {
                   {user.isVerified ? '✓ موثق' : '✗ غير موثق'}
                 </td>
                 <td className="px-6 py-4 text-sm">
+                  <button
+                    onClick={() => handleEdit(user)}
+                    className="text-blue-600 hover:text-blue-800 mr-4"
+                  >
+                    تعديل
+                  </button>
                   <button
                     onClick={() => handleDelete(user.id)}
                     className="text-red-600 hover:text-red-800"

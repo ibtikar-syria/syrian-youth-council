@@ -10,6 +10,7 @@ import requestsRouter from './routes/requests';
 import responsesRouter from './routes/responses';
 import tagsRouter from './routes/tags';
 import usersRouter from './routes/users';
+import groupsRouter from './routes/groups';
 
 // Import for cron job
 import { getDb } from './db';
@@ -44,6 +45,7 @@ app.get('/', (c) => {
       responses: '/api/responses',
       tags: '/api/tags',
       users: '/api/users',
+      groups: '/api/groups',
     },
   });
 });
@@ -53,6 +55,7 @@ app.route('/api/requests', requestsRouter);
 app.route('/api/responses', responsesRouter);
 app.route('/api/tags', tagsRouter);
 app.route('/api/users', usersRouter);
+app.route('/api/groups', groupsRouter);
 
 // 404 handler
 app.notFound((c) => {
@@ -69,7 +72,7 @@ app.onError((err, c) => {
 export default {
   fetch: app.fetch,
   
-  async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext) {
+  async scheduled(event: any, env: Env, ctx: any) {
     console.log('Running scheduled task: Group similar requests');
     
     try {
