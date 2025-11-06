@@ -23,34 +23,39 @@ const Login = () => {
 
   return (
     <div className="max-w-md mx-auto mt-12">
-      <div className="bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-3xl font-bold text-center mb-6">تسجيل الدخول</h2>
+      <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+        <div className="text-center mb-8">
+          <h2 className="text-4xl font-bold text-gray-900 mb-2">تسجيل الدخول</h2>
+          <p className="text-gray-600">أهلاً بك مجدداً</p>
+        </div>
 
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {error}
+          <div className="bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-lg mb-6 shadow-sm">
+            <p className="font-medium">{error}</p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2">البريد الإلكتروني</label>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-gray-800 font-semibold mb-2">البريد الإلكتروني</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
+              placeholder="example@email.com"
               required
             />
           </div>
 
-          <div className="mb-6">
-            <label className="block text-gray-700 mb-2">كلمة المرور</label>
+          <div>
+            <label className="block text-gray-800 font-semibold mb-2">كلمة المرور</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
+              placeholder="••••••••"
               required
             />
           </div>
@@ -58,18 +63,20 @@ const Login = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:bg-gray-400"
+            className="w-full bg-linear-to-r from-blue-600 to-blue-700 text-white py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
             {isLoading ? 'جاري تسجيل الدخول...' : 'تسجيل الدخول'}
           </button>
         </form>
 
-        <p className="text-center mt-4 text-gray-600">
-          ليس لديك حساب؟{' '}
-          <Link to="/register" className="text-blue-600 hover:underline">
-            إنشاء حساب جديد
-          </Link>
-        </p>
+        <div className="mt-6 text-center">
+          <p className="text-gray-600">
+            ليس لديك حساب؟{' '}
+            <Link to="/register" className="text-blue-600 hover:text-blue-700 font-semibold hover:underline">
+              إنشاء حساب جديد
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

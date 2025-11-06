@@ -5,55 +5,77 @@ const Layout = () => {
   const { isAuthenticated, user, logout } = useAuthStore();
 
   return (
-    <div className="min-h-screen bg-gray-50" dir="rtl">
+    <div className="flex flex-col min-h-screen bg-linear-to-br from-gray-50 to-gray-100" dir="rtl">
       {/* Navbar */}
-      <nav className="bg-white shadow-md">
+      <nav className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
-            <div className="flex items-center space-x-reverse space-x-8">
-              <Link to="/" className="text-2xl font-bold text-blue-600">
-                مجلس الشباب السوري
+            <div className="flex items-center space-x-reverse space-x-6">
+              <Link to="/" className="flex items-center space-x-reverse space-x-2">
+                <span className="text-2xl font-bold bg-linear-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                  مجلس الشباب السوري
+                </span>
               </Link>
               
               {isAuthenticated && (
-                <>
-                  <Link to="/dashboard" className="text-gray-700 hover:text-blue-600">
+                <div className="hidden md:flex items-center space-x-reverse space-x-1">
+                  <Link 
+                    to="/dashboard" 
+                    className="px-3 py-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 font-medium"
+                  >
                     لوحة التحكم
                   </Link>
-                  <Link to="/my-requests" className="text-gray-700 hover:text-blue-600">
+                  <Link 
+                    to="/my-requests" 
+                    className="px-3 py-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 font-medium"
+                  >
                     طلباتي
                   </Link>
-                  <Link to="/create-request" className="text-gray-700 hover:text-blue-600">
+                  <Link 
+                    to="/create-request" 
+                    className="px-3 py-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 font-medium"
+                  >
                     طلب جديد
                   </Link>
                   
                   {(user?.role === 'admin' || user?.role === 'ministry_staff') && (
-                    <Link to="/view-requests" className="text-gray-700 hover:text-blue-600">
+                    <Link 
+                      to="/view-requests" 
+                      className="px-3 py-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 font-medium"
+                    >
                       عرض الطلبات
                     </Link>
                   )}
                   
                   {user?.role === 'admin' && (
                     <>
-                      <Link to="/manage-tags" className="text-gray-700 hover:text-blue-600">
+                      <Link 
+                        to="/manage-tags" 
+                        className="px-3 py-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 font-medium"
+                      >
                         إدارة الوسوم
                       </Link>
-                      <Link to="/manage-users" className="text-gray-700 hover:text-blue-600">
+                      <Link 
+                        to="/manage-users" 
+                        className="px-3 py-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 font-medium"
+                      >
                         إدارة المستخدمين
                       </Link>
                     </>
                   )}
-                </>
+                </div>
               )}
             </div>
 
-            <div className="flex items-center space-x-reverse space-x-4">
+            <div className="flex items-center space-x-reverse space-x-3">
               {isAuthenticated ? (
                 <>
-                  <span className="text-gray-700">مرحباً، {user?.name}</span>
+                  <span className="hidden sm:block text-gray-700 font-medium px-3 py-2">
+                    مرحباً، {user?.name}
+                  </span>
                   <button
                     onClick={logout}
-                    className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+                    className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-all duration-200 font-medium shadow-sm hover:shadow-md"
                   >
                     تسجيل الخروج
                   </button>
@@ -62,13 +84,13 @@ const Layout = () => {
                 <>
                   <Link
                     to="/login"
-                    className="text-gray-700 hover:text-blue-600"
+                    className="px-4 py-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 font-medium"
                   >
                     تسجيل الدخول
                   </Link>
                   <Link
                     to="/register"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                    className="bg-linear-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 font-medium shadow-sm hover:shadow-md"
                   >
                     إنشاء حساب
                   </Link>
@@ -80,16 +102,21 @@ const Layout = () => {
       </nav>
 
       {/* Main content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Outlet />
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <p className="text-center">
-            © 2025 مجلس الشباب السوري - بالتعاون مع تجمع إبتكار
-          </p>
+      <footer className="bg-linear-to-r from-gray-800 to-gray-900 text-white mt-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center">
+            <p className="text-lg font-medium mb-2">
+              مجلس الشباب السوري
+            </p>
+            <p className="text-gray-400 text-sm">
+              © 2025 بالتعاون مع تجمع إبتكار - جميع الحقوق محفوظة
+            </p>
+          </div>
         </div>
       </footer>
     </div>

@@ -6,68 +6,76 @@ const Home = () => {
 
   return (
     <div className="text-center">
-      <h1 className="text-5xl font-bold text-gray-900 mb-6">
-        مرحباً بكم في منصة مجلس الشباب السوري
-      </h1>
-      
-      <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-        منصة إلكترونية تسهل تواصل الشباب السوري في المغترب مع وزارة الشباب والرياضة السورية
-      </p>
+      {/* Hero Section */}
+      <div className="mb-16">
+        <h1 className="text-5xl md:text-6xl font-extrabold bg-linear-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-6 leading-tight">
+          مرحباً بكم في منصة مجلس الشباب السوري
+        </h1>
+        
+        <p className="text-xl md:text-2xl text-gray-700 mb-10 max-w-3xl mx-auto leading-relaxed">
+          منصة إلكترونية تسهل تواصل الشباب السوري في المغترب مع وزارة الشباب والرياضة السورية
+        </p>
 
-      <div className="grid md:grid-cols-3 gap-8 mb-12">
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-2xl font-bold text-blue-600 mb-4">📝 إرسال الطلبات</h3>
-          <p className="text-gray-600">
+        {!isAuthenticated && (
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+            <Link
+              to="/register"
+              className="inline-block bg-linear-to-r from-blue-600 to-blue-700 text-white px-10 py-4 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              ابدأ الآن
+            </Link>
+            <Link
+              to="/login"
+              className="inline-block bg-white text-gray-800 px-10 py-4 rounded-xl text-lg font-semibold hover:bg-gray-50 transition-all duration-200 shadow-lg hover:shadow-xl border-2 border-gray-200 transform hover:-translate-y-0.5"
+            >
+              تسجيل الدخول
+            </Link>
+          </div>
+        )}
+
+        {isAuthenticated && (
+          <Link
+            to="/create-request"
+            className="inline-block bg-linear-to-r from-blue-600 to-blue-700 text-white px-10 py-4 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+          >
+            أرسل طلبك الآن
+          </Link>
+        )}
+      </div>
+
+      {/* Features Section */}
+      <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+          <div className="text-5xl mb-4">📝</div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-3">إرسال الطلبات</h3>
+          <p className="text-gray-600 leading-relaxed">
             يمكنك إرسال طلباتك واستفساراتك إلى الوزارة بكل سهولة
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-2xl font-bold text-blue-600 mb-4">🤖 تحليل ذكي</h3>
-          <p className="text-gray-600">
+        <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+          <div className="text-5xl mb-4">🤖</div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-3">تحليل ذكي</h3>
+          <p className="text-gray-600 leading-relaxed">
             نستخدم الذكاء الاصطناعي لتصنيف وتجميع الطلبات المتشابهة
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-2xl font-bold text-blue-600 mb-4">✉️ ردود مخصصة</h3>
-          <p className="text-gray-600">
+        <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+          <div className="text-5xl mb-4">✉️</div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-3">ردود مخصصة</h3>
+          <p className="text-gray-600 leading-relaxed">
             احصل على ردود مخصصة من الوزارة على طلباتك
           </p>
         </div>
       </div>
 
-      {!isAuthenticated && (
-        <div className="space-x-reverse space-x-4">
-          <Link
-            to="/register"
-            className="inline-block bg-blue-600 text-white px-8 py-3 rounded-md text-lg hover:bg-blue-700"
-          >
-            ابدأ الآن
-          </Link>
-          <Link
-            to="/login"
-            className="inline-block bg-gray-200 text-gray-800 px-8 py-3 rounded-md text-lg hover:bg-gray-300"
-          >
-            تسجيل الدخول
-          </Link>
-        </div>
-      )}
-
-      {isAuthenticated && (
-        <Link
-          to="/create-request"
-          className="inline-block bg-blue-600 text-white px-8 py-3 rounded-md text-lg hover:bg-blue-700"
-        >
-          أرسل طلبك الآن
-        </Link>
-      )}
-
-      <div className="mt-16 bg-blue-50 p-8 rounded-lg">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">
+      {/* About Section */}
+      <div className="mt-20 bg-linear-to-br from-blue-50 to-indigo-50 p-10 rounded-2xl shadow-inner border border-blue-100">
+        <h2 className="text-4xl font-bold text-gray-900 mb-6">
           عن المشروع
         </h2>
-        <p className="text-gray-700 max-w-3xl mx-auto">
+        <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
           هذا المشروع يتم تطويره بالتعاون بين تجمع إبتكار والاتحاد العام لطلبة سوريا - فرع تركيا،
           بهدف تسهيل التواصل بين الشباب السوري في المغترب ووزارة الشباب والرياضة السورية.
         </p>

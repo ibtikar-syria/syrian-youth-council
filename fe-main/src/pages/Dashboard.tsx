@@ -21,48 +21,67 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h1 className="text-4xl font-bold mb-6">لوحة التحكم</h1>
+      <h1 className="text-4xl md:text-5xl font-bold mb-8 bg-linear-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+        لوحة التحكم
+      </h1>
 
-      <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-        <h2 className="text-2xl font-bold mb-4">معلومات الحساب</h2>
-        <p className="text-gray-700">
-          <strong>الاسم:</strong> {user?.name}
-        </p>
-        <p className="text-gray-700">
-          <strong>البريد الإلكتروني:</strong> {user?.email}
-        </p>
-        <p className="text-gray-700">
-          <strong>الدور:</strong> {user && getRoleName(user.role)}
-        </p>
-        <p className="text-gray-700">
-          <strong>الحالة:</strong> {user?.isVerified ? 'موثق ✓' : 'غير موثق'}
-        </p>
+      <div className="bg-white p-8 rounded-2xl shadow-lg mb-8 border border-gray-100">
+        <h2 className="text-2xl font-bold mb-6 text-gray-900 flex items-center gap-2">
+          <span className="text-3xl">👤</span>
+          معلومات الحساب
+        </h2>
+        <div className="space-y-3">
+          <p className="text-gray-700 text-lg">
+            <strong className="text-gray-900">الاسم:</strong> {user?.name}
+          </p>
+          <p className="text-gray-700 text-lg">
+            <strong className="text-gray-900">البريد الإلكتروني:</strong> {user?.email}
+          </p>
+          <p className="text-gray-700 text-lg">
+            <strong className="text-gray-900">الدور:</strong> {user && getRoleName(user.role)}
+          </p>
+          <div className="flex items-center gap-2 text-lg">
+            <strong className="text-gray-900">الحالة:</strong> 
+            {user?.isVerified ? (
+              <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700 font-medium">
+                موثق ✓
+              </span>
+            ) : (
+              <span className="inline-flex items-center px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 font-medium">
+                غير موثق
+              </span>
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Link
           to="/my-requests"
-          className="bg-blue-500 text-white p-6 rounded-lg shadow-md hover:bg-blue-600 transition"
+          className="bg-linear-to-br from-blue-500 to-blue-600 text-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-blue-400"
         >
-          <h3 className="text-xl font-bold mb-2">طلباتي</h3>
-          <p>عرض وإدارة طلباتك</p>
+          <div className="text-4xl mb-3">📋</div>
+          <h3 className="text-2xl font-bold mb-2">طلباتي</h3>
+          <p className="text-blue-100">عرض وإدارة طلباتك</p>
         </Link>
 
         <Link
           to="/create-request"
-          className="bg-green-500 text-white p-6 rounded-lg shadow-md hover:bg-green-600 transition"
+          className="bg-linear-to-br from-green-500 to-green-600 text-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-green-400"
         >
-          <h3 className="text-xl font-bold mb-2">طلب جديد</h3>
-          <p>إرسال طلب جديد للوزارة</p>
+          <div className="text-4xl mb-3">✍️</div>
+          <h3 className="text-2xl font-bold mb-2">طلب جديد</h3>
+          <p className="text-green-100">إرسال طلب جديد للوزارة</p>
         </Link>
 
         {(user?.role === 'admin' || user?.role === 'ministry_staff') && (
           <Link
             to="/view-requests"
-            className="bg-purple-500 text-white p-6 rounded-lg shadow-md hover:bg-purple-600 transition"
+            className="bg-linear-to-br from-purple-500 to-purple-600 text-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-purple-400"
           >
-            <h3 className="text-xl font-bold mb-2">عرض الطلبات</h3>
-            <p>مراجعة والرد على الطلبات</p>
+            <div className="text-4xl mb-3">👁️</div>
+            <h3 className="text-2xl font-bold mb-2">عرض الطلبات</h3>
+            <p className="text-purple-100">مراجعة والرد على الطلبات</p>
           </Link>
         )}
 
@@ -70,18 +89,20 @@ const Dashboard = () => {
           <>
             <Link
               to="/manage-tags"
-              className="bg-orange-500 text-white p-6 rounded-lg shadow-md hover:bg-orange-600 transition"
+              className="bg-linear-to-br from-orange-500 to-orange-600 text-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-orange-400"
             >
-              <h3 className="text-xl font-bold mb-2">إدارة الوسوم</h3>
-              <p>إضافة وتعديل الوسوم</p>
+              <div className="text-4xl mb-3">🏷️</div>
+              <h3 className="text-2xl font-bold mb-2">إدارة الوسوم</h3>
+              <p className="text-orange-100">إضافة وتعديل الوسوم</p>
             </Link>
 
             <Link
               to="/manage-users"
-              className="bg-red-500 text-white p-6 rounded-lg shadow-md hover:bg-red-600 transition"
+              className="bg-linear-to-br from-red-500 to-red-600 text-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-red-400"
             >
-              <h3 className="text-xl font-bold mb-2">إدارة المستخدمين</h3>
-              <p>إضافة وتعديل المستخدمين</p>
+              <div className="text-4xl mb-3">👥</div>
+              <h3 className="text-2xl font-bold mb-2">إدارة المستخدمين</h3>
+              <p className="text-red-100">إضافة وتعديل المستخدمين</p>
             </Link>
           </>
         )}
