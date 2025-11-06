@@ -6,6 +6,7 @@ export type Env = {
   DB: D1Database;
   JWT_SECRET: string;
   DEEPSEEK_API_KEY: string;
+  ALLOWED_ORIGINS?: string;
 };
 
 export type Variables = {

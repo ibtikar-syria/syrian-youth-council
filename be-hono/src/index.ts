@@ -22,10 +22,16 @@ const app = new Hono<{ Bindings: Env }>();
 // Middleware
 app.use('*', logger());
 app.use('*', prettyJSON());
-app.use('*', cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000'],
-  credentials: true,
-}));
+app.use('*', async (c, next) => {
+  const allowedOrigins = c.env.ALLOWED_ORIGINS 
+    ? c.env.ALLOWED_ORIGINS.split(',').map((origin: string) => origin.trim())
+    : ['http://localhost:5173', 'http://localhost:3000'];
+  
+  return cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })(c, next);
+});
 
 // Routes
 app.get('/', (c) => {

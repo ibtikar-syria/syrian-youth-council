@@ -7,9 +7,9 @@
     "nodejs_compat"
   ],
   "vars": {
-    "JWT_SECRET": "your-secret-key-change-in-production",
-    "DEEPSEEK_API_KEY": "your-deepseek-api-key"
+    "ALLOWED_ORIGINS": "http://localhost:5173,http://localhost:3000"
   },
+
   "d1_databases": [
     {
       "binding": "DB",
