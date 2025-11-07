@@ -206,25 +206,25 @@ const ViewRequestsEnhanced = () => {
   }
 
   return (
-    <div>
+    <div className="px-4 sm:px-0">
       <div className="mb-6">
-        <h1 className="text-4xl font-bold mb-4">عرض الطلبات</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold mb-4">عرض الطلبات</h1>
         
-        <div className="flex flex-wrap gap-4 items-center mb-4">
-          <div className="flex-1 min-w-64">
+        <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center mb-4">
+          <div className="flex-1 min-w-0">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="بحث..."
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-3 sm:px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm sm:text-base"
             />
           </div>
           
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value as FilterStatus)}
-            className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+            className="w-full sm:w-auto px-3 sm:px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm sm:text-base"
           >
             <option value="all">كل الحالات</option>
             <option value="pending">قيد الانتظار</option>
@@ -237,44 +237,44 @@ const ViewRequestsEnhanced = () => {
 
       {/* Direct Requests Section */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-4 text-blue-600">الطلبات المباشرة (من القادة الشباب)</h2>
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-blue-600">الطلبات المباشرة (من القادة الشباب)</h2>
         <div className="space-y-4">
           {filteredDirectRequests.length === 0 ? (
-            <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-lg">لا توجد طلبات مباشرة</div>
+            <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-lg text-sm sm:text-base">لا توجد طلبات مباشرة</div>
           ) : (
             filteredDirectRequests.map((request) => (
-              <div key={request.id} className="bg-white p-6 rounded-lg shadow-md border-r-4 border-blue-500">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-bold">
+              <div key={request.id} className="bg-white p-4 sm:p-6 rounded-lg shadow-md border-r-4 border-blue-500">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-bold whitespace-nowrap">
                         طلب مباشر
                       </span>
-                      <h3 className="text-xl font-bold">{request.title}</h3>
+                      <h3 className="text-lg sm:text-xl font-bold break-words">{request.title}</h3>
                     </div>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-600 text-xs sm:text-sm break-words">
                       من: {request.userName} ({request.userEmail})
                     </p>
                   </div>
-                  <span className={`px-3 py-1 rounded-full text-sm font-bold ${getStatusColor(request.status)}`}>
+                  <span className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap ${getStatusColor(request.status)}`}>
                     {getStatusText(request.status)}
                   </span>
                 </div>
 
-                <p className="text-gray-700 mb-4 whitespace-pre-wrap">{request.content}</p>
+                <p className="text-gray-700 mb-4 whitespace-pre-wrap text-sm sm:text-base break-words">{request.content}</p>
 
                 {request.tags && request.tags.length > 0 && (
                   <div className="flex flex-wrap gap-2 mb-4">
                     {request.tags.map((tag, idx) => (
-                      <span key={idx} className="bg-gray-200 px-3 py-1 rounded-full text-sm">
+                      <span key={idx} className="bg-gray-200 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm">
                         {tag.tagNameAr || tag.tagName}
                       </span>
                     ))}
                   </div>
                 )}
 
-                <div className="flex justify-between items-center">
-                  <p className="text-gray-500 text-sm">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                  <p className="text-gray-500 text-xs sm:text-sm">
                     {new Date(request.createdAt).toLocaleDateString('en-GB', {
                       year: 'numeric',
                       month: 'long',
@@ -285,7 +285,7 @@ const ViewRequestsEnhanced = () => {
                   {request.status !== 'responded' && (
                     <button
                       onClick={() => handleRespondToRequest(request)}
-                      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                      className="w-full sm:w-auto bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-md hover:bg-blue-700 text-sm sm:text-base"
                     >
                       الرد على الطلب
                     </button>
@@ -299,49 +299,49 @@ const ViewRequestsEnhanced = () => {
 
       {/* Grouped Public Requests Section */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-4 text-purple-600">الطلبات العامة المجمعة (من الشباب)</h2>
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-purple-600">الطلبات العامة المجمعة (من الشباب)</h2>
         <div className="space-y-4">
           {filteredGroups.length === 0 ? (
-            <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-lg">لا توجد مجموعات</div>
+            <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-lg text-sm sm:text-base">لا توجد مجموعات</div>
           ) : (
             filteredGroups.map((group) => (
-              <div key={group.id} className="bg-white p-6 rounded-lg shadow-md border-r-4 border-purple-500">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-bold">
+              <div key={group.id} className="bg-white p-4 sm:p-6 rounded-lg shadow-md border-r-4 border-purple-500">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-bold whitespace-nowrap">
                         مجموعة طلبات
                       </span>
-                      <h3 className="text-xl font-bold">{group.title}</h3>
+                      <h3 className="text-lg sm:text-xl font-bold break-words">{group.title}</h3>
                     </div>
                     {group.description && (
-                      <p className="text-gray-600 text-sm mb-2">{group.description}</p>
+                      <p className="text-gray-600 text-xs sm:text-sm mb-2 break-words">{group.description}</p>
                     )}
                     {group.tagNameAr && (
-                      <span className="inline-block bg-purple-50 text-purple-700 px-3 py-1 rounded-full text-sm">
+                      <span className="inline-block bg-purple-50 text-purple-700 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm">
                         {group.tagNameAr}
                       </span>
                     )}
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4 mb-4 text-center">
-                  <div className="bg-gray-50 p-3 rounded-md">
-                    <div className="text-2xl font-bold text-gray-800">{group.requestCount}</div>
-                    <div className="text-sm text-gray-600">إجمالي الطلبات</div>
+                <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-4 text-center">
+                  <div className="bg-gray-50 p-2 sm:p-3 rounded-md">
+                    <div className="text-xl sm:text-2xl font-bold text-gray-800">{group.requestCount}</div>
+                    <div className="text-xs sm:text-sm text-gray-600">إجمالي الطلبات</div>
                   </div>
-                  <div className="bg-yellow-50 p-3 rounded-md">
-                    <div className="text-2xl font-bold text-yellow-800">{group.pendingCount}</div>
-                    <div className="text-sm text-yellow-600">قيد الانتظار</div>
+                  <div className="bg-yellow-50 p-2 sm:p-3 rounded-md">
+                    <div className="text-xl sm:text-2xl font-bold text-yellow-800">{group.pendingCount}</div>
+                    <div className="text-xs sm:text-sm text-yellow-600">قيد الانتظار</div>
                   </div>
-                  <div className="bg-green-50 p-3 rounded-md">
-                    <div className="text-2xl font-bold text-green-800">{group.respondedCount}</div>
-                    <div className="text-sm text-green-600">تم الرد</div>
+                  <div className="bg-green-50 p-2 sm:p-3 rounded-md">
+                    <div className="text-xl sm:text-2xl font-bold text-green-800">{group.respondedCount}</div>
+                    <div className="text-xs sm:text-sm text-green-600">تم الرد</div>
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center">
-                  <p className="text-gray-500 text-sm">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                  <p className="text-gray-500 text-xs sm:text-sm">
                     {new Date(group.createdAt).toLocaleDateString('en-GB', {
                       year: 'numeric',
                       month: 'long',
@@ -349,17 +349,17 @@ const ViewRequestsEnhanced = () => {
                     })}
                   </p>
 
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <button
                       onClick={() => handleViewGroupRequests(group)}
-                      className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300"
+                      className="w-full sm:w-auto bg-gray-200 text-gray-700 px-3 sm:px-4 py-2 rounded-md hover:bg-gray-300 text-sm sm:text-base whitespace-nowrap"
                     >
                       عرض الطلبات ({group.requestCount})
                     </button>
                     {!group.hasResponse && (
                       <button
                         onClick={() => handleRespondToGroup(group)}
-                        className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700"
+                        className="w-full sm:w-auto bg-purple-600 text-white px-3 sm:px-4 py-2 rounded-md hover:bg-purple-700 text-sm sm:text-base whitespace-nowrap"
                       >
                         الرد على المجموعة
                       </button>
@@ -375,26 +375,26 @@ const ViewRequestsEnhanced = () => {
       {/* View Requests Modal */}
       {showRequestsModal && selectedGroup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white p-8 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <h2 className="text-2xl font-bold mb-4">طلبات المجموعة: {selectedGroup.title}</h2>
+          <div className="bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4 break-words">طلبات المجموعة: {selectedGroup.title}</h2>
 
             {selectedGroup.description && (
-              <p className="text-gray-600 mb-4">{selectedGroup.description}</p>
+              <p className="text-gray-600 mb-4 text-sm sm:text-base break-words">{selectedGroup.description}</p>
             )}
 
             <div className="space-y-3 mb-6">
               {groupRequests.map((req) => (
-                <div key={req.id} className="p-4 bg-gray-50 border rounded-md">
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="flex-1">
-                      <h3 className="font-bold text-lg">{req.title}</h3>
-                      <p className="text-sm text-gray-600">من: {req.userName} ({req.userEmail})</p>
+                <div key={req.id} className="p-3 sm:p-4 bg-gray-50 border rounded-md">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 gap-2">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-base sm:text-lg break-words">{req.title}</h3>
+                      <p className="text-xs sm:text-sm text-gray-600 break-words">من: {req.userName} ({req.userEmail})</p>
                     </div>
-                    <span className={`text-xs px-2 py-1 rounded-full ${getStatusColor(req.status)}`}>
+                    <span className={`text-xs px-2 py-1 rounded-full whitespace-nowrap ${getStatusColor(req.status)}`}>
                       {getStatusText(req.status)}
                     </span>
                   </div>
-                  <p className="text-gray-700 text-sm whitespace-pre-wrap">{req.content}</p>
+                  <p className="text-gray-700 text-xs sm:text-sm whitespace-pre-wrap break-words">{req.content}</p>
                   <p className="text-xs text-gray-500 mt-2">
                     {new Date(req.createdAt).toLocaleDateString('en-GB')}
                   </p>
@@ -402,21 +402,21 @@ const ViewRequestsEnhanced = () => {
               ))}
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               {!selectedGroup.hasResponse && (
                 <button
                   onClick={() => {
                     setShowRequestsModal(false);
                     setShowResponseModal(true);
                   }}
-                  className="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700"
+                  className="w-full sm:w-auto bg-purple-600 text-white px-4 sm:px-6 py-2 rounded-md hover:bg-purple-700 text-sm sm:text-base"
                 >
                   الرد على المجموعة
                 </button>
               )}
               <button
                 onClick={handleCloseModal}
-                className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400"
+                className="w-full sm:w-auto bg-gray-300 text-gray-800 px-4 sm:px-6 py-2 rounded-md hover:bg-gray-400 text-sm sm:text-base"
               >
                 إغلاق
               </button>
@@ -428,16 +428,16 @@ const ViewRequestsEnhanced = () => {
       {/* Response Modal */}
       {showResponseModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white p-8 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <h2 className="text-2xl font-bold mb-4">
+          <div className="bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">
               {selectedGroup ? 'الرد على المجموعة' : 'الرد على الطلب'}
             </h2>
 
             {selectedRequest && (
-              <div className="mb-6 p-4 bg-gray-50 rounded-md">
-                <h3 className="font-bold text-lg mb-2">{selectedRequest.title}</h3>
-                <p className="text-gray-700 mb-2">{selectedRequest.content}</p>
-                <p className="text-sm text-gray-500">
+              <div className="mb-6 p-3 sm:p-4 bg-gray-50 rounded-md">
+                <h3 className="font-bold text-base sm:text-lg mb-2 break-words">{selectedRequest.title}</h3>
+                <p className="text-gray-700 mb-2 text-sm sm:text-base break-words">{selectedRequest.content}</p>
+                <p className="text-xs sm:text-sm text-gray-500 break-words">
                   من: {selectedRequest.userName} ({selectedRequest.userEmail})
                 </p>
               </div>
@@ -445,22 +445,22 @@ const ViewRequestsEnhanced = () => {
 
             {selectedGroup && (
               <div className="mb-6">
-                <div className="p-4 bg-purple-50 rounded-md mb-4">
-                  <h3 className="font-bold text-lg mb-2">{selectedGroup.title}</h3>
+                <div className="p-3 sm:p-4 bg-purple-50 rounded-md mb-4">
+                  <h3 className="font-bold text-base sm:text-lg mb-2 break-words">{selectedGroup.title}</h3>
                   {selectedGroup.description && (
-                    <p className="text-gray-700 mb-2">{selectedGroup.description}</p>
+                    <p className="text-gray-700 mb-2 text-sm sm:text-base break-words">{selectedGroup.description}</p>
                   )}
-                  <p className="text-sm text-gray-600">
+                  <p className="text-xs sm:text-sm text-gray-600">
                     عدد الطلبات: {selectedGroup.requestCount}
                   </p>
                 </div>
 
                 <div className="space-y-2 max-h-48 overflow-y-auto mb-4">
-                  <h4 className="font-bold text-sm text-gray-700 mb-2">الطلبات في هذه المجموعة:</h4>
+                  <h4 className="font-bold text-xs sm:text-sm text-gray-700 mb-2">الطلبات في هذه المجموعة:</h4>
                   {groupRequests.map((req) => (
-                    <div key={req.id} className="p-2 bg-white border rounded-md text-sm">
-                      <p className="font-bold">{req.title}</p>
-                      <p className="text-xs text-gray-600">{req.userName}</p>
+                    <div key={req.id} className="p-2 bg-white border rounded-md text-xs sm:text-sm">
+                      <p className="font-bold break-words">{req.title}</p>
+                      <p className="text-xs text-gray-600 break-words">{req.userName}</p>
                     </div>
                   ))}
                 </div>
@@ -468,7 +468,7 @@ const ViewRequestsEnhanced = () => {
             )}
 
             <div className="mb-4">
-              <label className="block text-gray-700 font-bold mb-2">
+              <label className="block text-gray-700 font-bold mb-2 text-sm sm:text-base">
                 {selectedGroup 
                   ? 'اكتب ردك العام (سيتم إنشاء رد مخصص لكل طلب تلقائياً بواسطة الذكاء الاصطناعي)'
                   : 'اكتب ردك'
@@ -477,23 +477,23 @@ const ViewRequestsEnhanced = () => {
               <textarea
                 value={responseText}
                 onChange={(e) => setResponseText(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 h-40"
+                className="w-full px-3 sm:px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 h-32 sm:h-40 text-sm sm:text-base"
                 placeholder="اكتب ردك هنا..."
               />
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <button
                 onClick={handleSubmitResponse}
                 disabled={responding || !responseText.trim()}
-                className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="w-full sm:w-auto bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-sm sm:text-base"
               >
                 {responding ? 'جاري الإرسال...' : 'إرسال الرد'}
               </button>
               <button
                 onClick={handleCloseModal}
                 disabled={responding}
-                className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 disabled:bg-gray-200"
+                className="w-full sm:w-auto bg-gray-300 text-gray-800 px-4 sm:px-6 py-2 rounded-md hover:bg-gray-400 disabled:bg-gray-200 text-sm sm:text-base"
               >
                 إلغاء
               </button>

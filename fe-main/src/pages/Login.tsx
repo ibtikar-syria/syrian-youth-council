@@ -22,39 +22,39 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-12">
-      <div className="bg-white p-8 rounded-2xl shadow-xl border border-[#b9a779]/30">
-        <div className="text-center mb-8">
-          <h2 className="text-4xl font-bold text-[#06332c] mb-2">تسجيل الدخول</h2>
-          <p className="text-gray-600">أهلاً بك مجدداً</p>
+    <div className="max-w-md mx-auto mt-8 sm:mt-12 px-4 sm:px-0">
+      <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-[#b9a779]/30">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#06332c] mb-2">تسجيل الدخول</h2>
+          <p className="text-gray-600 text-sm sm:text-base">أهلاً بك مجدداً</p>
         </div>
 
         {error && (
           <div className="bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-lg mb-6 shadow-sm">
-            <p className="font-medium">{error}</p>
+            <p className="font-medium text-sm sm:text-base">{error}</p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
           <div>
-            <label className="block text-[#06332c] font-semibold mb-2">البريد الإلكتروني</label>
+            <label className="block text-[#06332c] font-semibold mb-2 text-sm sm:text-base">البريد الإلكتروني</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#b9a779] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#b9a779] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white text-sm sm:text-base"
               placeholder="example@email.com"
               required
             />
           </div>
 
           <div>
-            <label className="block text-[#06332c] font-semibold mb-2">كلمة المرور</label>
+            <label className="block text-[#06332c] font-semibold mb-2 text-sm sm:text-base">كلمة المرور</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#b9a779] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#b9a779] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white text-sm sm:text-base"
               placeholder="••••••••"
               required
             />
@@ -63,14 +63,14 @@ const Login = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-linear-to-r from-[#06332c] to-[#0a4a40] text-white py-3 rounded-xl hover:from-[#0a4a40] hover:to-[#06332c] disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            className="w-full bg-linear-to-r from-[#06332c] to-[#0a4a40] text-white py-2.5 sm:py-3 rounded-xl hover:from-[#0a4a40] hover:to-[#06332c] disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm sm:text-base"
           >
             {isLoading ? 'جاري تسجيل الدخول...' : 'تسجيل الدخول'}
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-gray-600">
+        <div className="mt-5 sm:mt-6 text-center">
+          <p className="text-gray-600 text-sm sm:text-base">
             ليس لديك حساب؟{' '}
             <Link to="/register" className="text-[#06332c] hover:text-[#0a4a40] font-semibold hover:underline">
               إنشاء حساب جديد
