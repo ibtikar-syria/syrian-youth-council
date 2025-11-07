@@ -11,6 +11,11 @@ const Register = () => {
   const navigate = useNavigate();
   const { register: registerUser, isLoading } = useAuthStore();
 
+  // Helper function to detect if text contains Arabic characters
+  const hasArabic = (text: string) => {
+    return /[\u0600-\u06FF]/.test(text);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -56,6 +61,7 @@ const Register = () => {
               onChange={(e) => setName(e.target.value)}
               className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#b9a779] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white text-sm sm:text-base"
               placeholder="أدخل اسمك الكامل"
+              dir={hasArabic(name) ? 'rtl' : 'ltr'}
               required
             />
           </div>
@@ -68,6 +74,7 @@ const Register = () => {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#b9a779] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white text-sm sm:text-base"
               placeholder="example@email.com"
+              dir="ltr"
               required
             />
           </div>
@@ -80,6 +87,7 @@ const Register = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#b9a779] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white text-sm sm:text-base"
               placeholder="••••••••"
+              dir="ltr"
               required
             />
             <p className="text-xs sm:text-sm text-gray-500 mt-1">يجب أن تكون 8 أحرف على الأقل</p>
@@ -93,6 +101,7 @@ const Register = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#b9a779] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white text-sm sm:text-base"
               placeholder="••••••••"
+              dir="ltr"
               required
             />
           </div>

@@ -44,6 +44,7 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#b9a779] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white text-sm sm:text-base"
               placeholder="example@email.com"
+              dir="ltr"
               required
             />
           </div>
@@ -56,6 +57,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#b9a779] focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white text-sm sm:text-base"
               placeholder="••••••••"
+              dir="ltr"
               required
             />
           </div>
