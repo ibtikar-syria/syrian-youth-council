@@ -102,6 +102,8 @@ requestsRouter.post(
 );
 
 // Get all requests (with filters) - Ministry staff and admin only
+// This endpoint returns only DIRECT requests (type = direct_request)
+// Public requests are grouped and accessed via /api/groups endpoint
 requestsRouter.get(
   '/',
   authMiddleware,
@@ -116,7 +118,7 @@ requestsRouter.get(
       const limitNum = parseInt(limit);
       const offset = (pageNum - 1) * limitNum;
 
-      // Build query with filters
+      // Build query with filters - ONLY show direct requests
       let query = db
         .select({
           id: requests.id,
@@ -136,15 +138,13 @@ requestsRouter.get(
         .limit(limitNum)
         .offset(offset);
 
-      // Apply filters
-      const conditions = [];
+      // Apply filters - always filter to show only direct requests
+      const conditions = [eq(requests.type, REQUEST_TYPES.DIRECT)];
       if (status) conditions.push(eq(requests.status, status));
       if (type) conditions.push(eq(requests.type, type));
       if (filterUserId) conditions.push(eq(requests.userId, parseInt(filterUserId)));
 
-      if (conditions.length > 0) {
-        query = query.where(and(...conditions)) as any;
-      }
+      query = query.where(and(...conditions)) as any;
 
       const results = await query.all();
 

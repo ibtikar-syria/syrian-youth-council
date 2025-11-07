@@ -14,8 +14,8 @@ import groupsRouter from './routes/groups';
 
 // Import for cron job
 import { getDb } from './db';
-import { requests, REQUEST_STATUS } from './db/schema';
-import { eq } from 'drizzle-orm';
+import { requests, REQUEST_STATUS, REQUEST_TYPES } from './db/schema';
+import { eq, and, sql } from 'drizzle-orm';
 import { AIService } from './utils/ai';
 
 const app = new Hono<{ Bindings: Env }>();
@@ -57,6 +57,155 @@ app.route('/api/tags', tagsRouter);
 app.route('/api/users', usersRouter);
 app.route('/api/groups', groupsRouter);
 
+// Manual trigger for grouping (for testing - remove in production)
+app.post('/api/admin/trigger-grouping', async (c) => {
+  try {
+    // Add authentication check here if needed
+    const db = getDb(c.env.DB);
+    const aiService = new AIService(c.env.DEEPSEEK_API_KEY);
+    const { requestGroups, requestTags, tags: tagsTable } = await import('./db/schema');
+
+    const ungroupedRequests = await db
+      .select()
+      .from(requests)
+      .where(
+        and(
+          eq(requests.type, REQUEST_TYPES.PUBLIC),
+          eq(requests.status, REQUEST_STATUS.ANALYZING),
+          sql`${requests.groupId} IS NULL`
+        )
+      )
+      .all();
+
+    if (ungroupedRequests.length === 0) {
+      return c.json({ message: 'No ungrouped requests found', processed: 0 });
+    }
+
+    const processed = new Set<number>();
+
+    for (const request of ungroupedRequests) {
+      if (processed.has(request.id)) continue;
+
+      try {
+        const otherRequests = ungroupedRequests.filter(
+          r => r.id !== request.id && !processed.has(r.id)
+        );
+
+        if (otherRequests.length === 0) {
+          const summary = await aiService.generateGroupSummary([request]);
+          const requestTagsData = await db
+            .select({ tagId: requestTags.tagId })
+            .from(requestTags)
+            .where(eq(requestTags.requestId, request.id))
+            .limit(1)
+            .all();
+          
+          const primaryTagId = requestTagsData.length > 0 ? requestTagsData[0].tagId : null;
+
+          const group = await db
+            .insert(requestGroups)
+            .values({
+              title: summary.title,
+              description: summary.description,
+              primaryTagId,
+            })
+            .returning()
+            .get();
+
+          await db
+            .update(requests)
+            .set({ groupId: group.id, status: REQUEST_STATUS.GROUPED })
+            .where(eq(requests.id, request.id))
+            .run();
+
+          processed.add(request.id);
+          continue;
+        }
+
+        const similarIds = await aiService.findSimilarRequests(request, otherRequests);
+
+        if (similarIds.length > 0) {
+          const similarRequests = otherRequests.filter(r => similarIds.includes(r.id));
+          const allRequestsInGroup = [request, ...similarRequests];
+          const summary = await aiService.generateGroupSummary(allRequestsInGroup);
+
+          const allRequestIds = allRequestsInGroup.map(r => r.id);
+          const tagCounts = await db
+            .select({
+              tagId: requestTags.tagId,
+              count: sql<number>`count(*)`,
+            })
+            .from(requestTags)
+            .where(sql`${requestTags.requestId} IN (${allRequestIds.join(',')})`)
+            .groupBy(requestTags.tagId)
+            .orderBy(sql`count(*) DESC`)
+            .limit(1)
+            .all();
+
+          const primaryTagId = tagCounts.length > 0 ? tagCounts[0].tagId : null;
+
+          const group = await db
+            .insert(requestGroups)
+            .values({
+              title: summary.title,
+              description: summary.description,
+              primaryTagId,
+            })
+            .returning()
+            .get();
+
+          for (const req of allRequestsInGroup) {
+            await db
+              .update(requests)
+              .set({ groupId: group.id, status: REQUEST_STATUS.GROUPED })
+              .where(eq(requests.id, req.id))
+              .run();
+            processed.add(req.id);
+          }
+        } else {
+          const summary = await aiService.generateGroupSummary([request]);
+          const requestTagsData = await db
+            .select({ tagId: requestTags.tagId })
+            .from(requestTags)
+            .where(eq(requestTags.requestId, request.id))
+            .limit(1)
+            .all();
+          
+          const primaryTagId = requestTagsData.length > 0 ? requestTagsData[0].tagId : null;
+
+          const group = await db
+            .insert(requestGroups)
+            .values({
+              title: summary.title,
+              description: summary.description,
+              primaryTagId,
+            })
+            .returning()
+            .get();
+
+          await db
+            .update(requests)
+            .set({ groupId: group.id, status: REQUEST_STATUS.GROUPED })
+            .where(eq(requests.id, request.id))
+            .run();
+          processed.add(request.id);
+        }
+      } catch (error) {
+        console.error(`Error processing request ${request.id}:`, error);
+      }
+    }
+
+    return c.json({ 
+      message: 'Grouping completed', 
+      processed: processed.size,
+      total: ungroupedRequests.length 
+    });
+  } catch (error) {
+    console.error('Manual grouping error:', error);
+    return c.json({ error: 'Grouping failed', details: String(error) }, 500);
+  }
+});
+
 // 404 handler
 app.notFound((c) => {
   return c.json({ error: 'Not found' }, 404);
@@ -78,42 +227,165 @@ export default {
     try {
       const db = getDb(env.DB);
       const aiService = new AIService(env.DEEPSEEK_API_KEY);
+      const { requestGroups, requestTags, tags } = await import('./db/schema');
 
-      // Get all pending/analyzing requests that haven't been grouped
-      const pendingRequests = await db
+      // Get all public requests that haven't been grouped yet (status: analyzing, no groupId)
+      const ungroupedRequests = await db
         .select()
         .from(requests)
-        .where(eq(requests.status, REQUEST_STATUS.ANALYZING))
+        .where(
+          and(
+            eq(requests.type, REQUEST_TYPES.PUBLIC),
+            eq(requests.status, REQUEST_STATUS.ANALYZING),
+            sql`${requests.groupId} IS NULL`
+          )
+        )
         .all();
 
-      console.log(`Found ${pendingRequests.length} requests to process`);
+      console.log(`Found ${ungroupedRequests.length} ungrouped public requests to process`);
 
-      // Process each request
-      for (const request of pendingRequests) {
+      if (ungroupedRequests.length === 0) {
+        console.log('No ungrouped requests to process');
+        return;
+      }
+
+      // Group processing: find similar requests and create groups
+      const processed = new Set<number>();
+
+      for (const request of ungroupedRequests) {
+        if (processed.has(request.id)) continue;
+
         try {
-          // Find similar requests
-          const otherRequests = pendingRequests.filter(r => r.id !== request.id);
+          // Find similar requests among unprocessed ones
+          const otherRequests = ungroupedRequests.filter(
+            r => r.id !== request.id && !processed.has(r.id)
+          );
+
+          if (otherRequests.length === 0) {
+            // No other requests to compare, create single-item group
+            const summary = await aiService.generateGroupSummary([request]);
+            
+            // Get primary tag for this request
+            const requestTagsData = await db
+              .select({ tagId: requestTags.tagId })
+              .from(requestTags)
+              .where(eq(requestTags.requestId, request.id))
+              .limit(1)
+              .all();
+            
+            const primaryTagId = requestTagsData.length > 0 ? requestTagsData[0].tagId : null;
+
+            // Create group
+            const group = await db
+              .insert(requestGroups)
+              .values({
+                title: summary.title,
+                description: summary.description,
+                primaryTagId,
+              })
+              .returning()
+              .get();
+
+            // Add request to group
+            await db
+              .update(requests)
+              .set({ groupId: group.id, status: REQUEST_STATUS.GROUPED })
+              .where(eq(requests.id, request.id))
+              .run();
+
+            processed.add(request.id);
+            console.log(`Created single-request group ${group.id} for request ${request.id}`);
+            continue;
+          }
+
+          // Find similar requests using AI
           const similarIds = await aiService.findSimilarRequests(request, otherRequests);
 
           if (similarIds.length > 0) {
-            // Group similar requests
-            console.log(`Found ${similarIds.length} similar requests for request ${request.id}`);
-            // TODO: Implement grouping logic
-            // This would involve creating a request group and updating all related requests
-          }
+            // Get the actual similar request objects
+            const similarRequests = otherRequests.filter(r => similarIds.includes(r.id));
+            const allRequestsInGroup = [request, ...similarRequests];
 
-          // Update status to grouped
-          await db
-            .update(requests)
-            .set({ status: REQUEST_STATUS.GROUPED })
-            .where(eq(requests.id, request.id))
-            .run();
+            // Generate group summary
+            const summary = await aiService.generateGroupSummary(allRequestsInGroup);
+
+            // Get primary tag (use the most common tag among all requests)
+            const allRequestIds = allRequestsInGroup.map(r => r.id);
+            const tagCounts = await db
+              .select({
+                tagId: requestTags.tagId,
+                count: sql<number>`count(*)`,
+              })
+              .from(requestTags)
+              .where(sql`${requestTags.requestId} IN (${allRequestIds.join(',')})`)
+              .groupBy(requestTags.tagId)
+              .orderBy(sql`count(*) DESC`)
+              .limit(1)
+              .all();
+
+            const primaryTagId = tagCounts.length > 0 ? tagCounts[0].tagId : null;
+
+            // Create group
+            const group = await db
+              .insert(requestGroups)
+              .values({
+                title: summary.title,
+                description: summary.description,
+                primaryTagId,
+              })
+              .returning()
+              .get();
+
+            console.log(`Created group ${group.id} with ${allRequestsInGroup.length} requests`);
+
+            // Update all requests in the group
+            for (const req of allRequestsInGroup) {
+              await db
+                .update(requests)
+                .set({ groupId: group.id, status: REQUEST_STATUS.GROUPED })
+                .where(eq(requests.id, req.id))
+                .run();
+
+              processed.add(req.id);
+            }
+          } else {
+            // No similar requests found, create single-item group
+            const summary = await aiService.generateGroupSummary([request]);
+            
+            const requestTagsData = await db
+              .select({ tagId: requestTags.tagId })
+              .from(requestTags)
+              .where(eq(requestTags.requestId, request.id))
+              .limit(1)
+              .all();
+            
+            const primaryTagId = requestTagsData.length > 0 ? requestTagsData[0].tagId : null;
+
+            const group = await db
+              .insert(requestGroups)
+              .values({
+                title: summary.title,
+                description: summary.description,
+                primaryTagId,
+              })
+              .returning()
+              .get();
+
+            await db
+              .update(requests)
+              .set({ groupId: group.id, status: REQUEST_STATUS.GROUPED })
+              .where(eq(requests.id, request.id))
+              .run();
+
+            processed.add(request.id);
+            console.log(`Created single-request group ${group.id} for request ${request.id}`);
+          }
         } catch (error) {
           console.error(`Error processing request ${request.id}:`, error);
         }
       }
 
-      console.log('Scheduled task completed');
+      console.log(`Scheduled task completed. Processed ${processed.size} requests`);
     } catch (error) {
       console.error('Scheduled task error:', error);
     }
