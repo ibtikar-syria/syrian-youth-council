@@ -9,6 +9,12 @@ interface Request {
   type: string;
   createdAt: string;
   tags: Array<{ tagName: string; tagNameAr: string }>;
+  response?: {
+    id: number;
+    content: string;
+    createdAt: number;
+    isPersonalized: number;
+  };
 }
 
 const MyRequests = () => {
@@ -108,9 +114,33 @@ const MyRequests = () => {
                 </div>
               )}
 
-              <p className="text-gray-500 text-sm">
+              <p className="text-gray-500 text-sm mb-4">
                 تاريخ الإرسال: {new Date(request.createdAt).toLocaleDateString('ar-SA')}
               </p>
+
+              {request.response && (
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-bold text-green-700 flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      الرد من الوزارة
+                    </h4>
+                    {request.response.isPersonalized === 1 && (
+                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">
+                        رد مخصص
+                      </span>
+                    )}
+                  </div>
+                  <div className="bg-green-50 p-4 rounded-md">
+                    <p className="text-gray-800 whitespace-pre-wrap">{request.response.content}</p>
+                    <p className="text-gray-500 text-xs mt-2">
+                      تاريخ الرد: {new Date(request.response.createdAt * 1000).toLocaleDateString('ar-SA')}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>

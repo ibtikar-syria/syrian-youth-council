@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { eq, and, desc, sql } from 'drizzle-orm';
 import { getDb } from '../db';
-import { requests, users, tags, requestTags, REQUEST_TYPES, REQUEST_STATUS, USER_ROLES } from '../db/schema';
+import { requests, users, tags, requestTags, responses, personalizedResponses, REQUEST_TYPES, REQUEST_STATUS, USER_ROLES } from '../db/schema';
 import { createRequestSchema, filterRequestsSchema } from '../schemas/validation';
 import { authMiddleware, requireMinistryOrAdmin, type Env, type Variables } from '../middleware/auth';
 import { AIService } from '../utils/ai';
@@ -196,9 +196,10 @@ requestsRouter.get('/my-requests', authMiddleware, async (c) => {
       .orderBy(desc(requests.createdAt))
       .all();
 
-    // Get tags for each request
-    const requestsWithTags = await Promise.all(
+    // Get tags and responses for each request
+    const requestsWithDetails = await Promise.all(
       myRequests.map(async (request) => {
+        // Get tags
         const requestTagsData = await db
           .select({
             tagId: tags.id,
@@ -210,14 +211,50 @@ requestsRouter.get('/my-requests', authMiddleware, async (c) => {
           .where(eq(requestTags.requestId, request.id))
           .all();
 
+        // Get response - check for personalized response first, then direct response
+        let response = null;
+        
+        // Check for personalized response (from group)
+        const personalizedResponseData = await db
+          .select({
+            id: sql<number>`${personalizedResponses.id}`,
+            content: sql<string>`${personalizedResponses.content}`,
+            createdAt: sql<number>`${personalizedResponses.createdAt}`,
+            isPersonalized: sql<number>`1`,
+          })
+          .from(personalizedResponses)
+          .where(eq(personalizedResponses.requestId, request.id))
+          .get();
+
+        if (personalizedResponseData) {
+          response = personalizedResponseData;
+        } else {
+          // Check for direct response
+          const directResponseData = await db
+            .select({
+              id: sql<number>`${responses.id}`,
+              content: sql<string>`${responses.content}`,
+              createdAt: sql<number>`${responses.createdAt}`,
+              isPersonalized: sql<number>`0`,
+            })
+            .from(responses)
+            .where(eq(responses.requestId, request.id))
+            .get();
+
+          if (directResponseData) {
+            response = directResponseData;
+          }
+        }
+
         return {
           ...request,
           tags: requestTagsData,
+          response: response,
         };
       })
     );
 
-    return c.json({ requests: requestsWithTags });
+    return c.json({ requests: requestsWithDetails });
   } catch (error) {
     console.error('Get my requests error:', error);
     return c.json({ error: 'Failed to get requests' }, 500);
