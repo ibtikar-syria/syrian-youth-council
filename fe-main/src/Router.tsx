@@ -7,7 +7,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import MyRequests from './pages/MyRequests';
 import CreateRequest from './pages/CreateRequest';
-import ViewRequests from './pages/ViewRequests';
+import ViewRequests from './pages/ViewRequestsEnhanced';
 import ManageTags from './pages/ManageTags';
 import ManageUsers from './pages/ManageUsers';
 
