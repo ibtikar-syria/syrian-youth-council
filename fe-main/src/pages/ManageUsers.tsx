@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import api from '../services/api';
 
 interface User {
-  id: number;
+  id: string;
   email: string;
   name: string;
   role: string;
@@ -77,7 +77,7 @@ const ManageUsers = () => {
     setShowForm(false);
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('هل أنت متأكد من حذف هذا المستخدم؟')) return;
     
     try {

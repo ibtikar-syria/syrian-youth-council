@@ -64,7 +64,7 @@ export class AIService {
     return result.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
   }
 
-  async findSimilarRequests(request: Request, otherRequests: Request[]): Promise<number[]> {
+  async findSimilarRequests(request: Request, otherRequests: Request[]): Promise<string[]> {
     if (otherRequests.length === 0) return [];
 
     const requestsList = otherRequests.map((r, idx) => 
@@ -87,10 +87,11 @@ export class AIService {
     
     if (result.toLowerCase() === 'none') return [];
     
+    // Return IDs as strings (UUIDs)
     return result
       .split(',')
-      .map(id => parseInt(id.trim()))
-      .filter(id => !isNaN(id));
+      .map(id => id.trim())
+      .filter(id => id.length > 0);
   }
 
   async generateGroupSummary(requests: Request[]): Promise<{ title: string; description: string }> {

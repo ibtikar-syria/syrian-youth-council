@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import api from '../services/api';
 
 interface Request {
-  id: number;
+  id: string;
   title: string;
   content: string;
   status: string;
@@ -11,11 +11,11 @@ interface Request {
   userEmail: string;
   createdAt: string;
   tags: Array<{ tagName: string; tagNameAr: string }>;
-  groupId?: number;
+  groupId?: string;
 }
 
 interface Group {
-  id: number;
+  id: string;
   title: string;
   description: string;
   requestCount: number;
@@ -78,7 +78,7 @@ const ViewRequestsEnhanced = () => {
     }
   };
 
-  const fetchGroupDetails = async (groupId: number, forViewing: boolean = false) => {
+  const fetchGroupDetails = async (groupId: string, forViewing: boolean = false) => {
     try {
       const response = await api.get(`/groups/${groupId}`);
       setGroupRequests(response.data.group.requests);

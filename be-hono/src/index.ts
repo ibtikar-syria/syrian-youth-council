@@ -106,6 +106,7 @@ app.post('/api/admin/trigger-grouping', async (c) => {
           const group = await db
             .insert(requestGroups)
             .values({
+              id: generateId(),
               title: summary.title,
               description: summary.description,
               primaryTagId,
@@ -148,6 +149,7 @@ app.post('/api/admin/trigger-grouping', async (c) => {
           const group = await db
             .insert(requestGroups)
             .values({
+              id: generateId(),
               title: summary.title,
               description: summary.description,
               primaryTagId,
@@ -177,6 +179,7 @@ app.post('/api/admin/trigger-grouping', async (c) => {
           const group = await db
             .insert(requestGroups)
             .values({
+              id: generateId(),
               title: summary.title,
               description: summary.description,
               primaryTagId,
@@ -280,6 +283,7 @@ export default {
             const group = await db
               .insert(requestGroups)
               .values({
+                id: generateId(),
                 title: summary.title,
                 description: summary.description,
                 primaryTagId,
@@ -330,6 +334,7 @@ export default {
             const group = await db
               .insert(requestGroups)
               .values({
+                id: generateId(),
                 title: summary.title,
                 description: summary.description,
                 primaryTagId,
@@ -365,6 +370,7 @@ export default {
             const group = await db
               .insert(requestGroups)
               .values({
+                id: generateId(),
                 title: summary.title,
                 description: summary.description,
                 primaryTagId,

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import api from '../services/api';
 
 interface Request {
-  id: number;
+  id: string;
   title: string;
   content: string;
   status: string;
@@ -10,7 +10,7 @@ interface Request {
   createdAt: string;
   tags: Array<{ tagName: string; tagNameAr: string }>;
   response?: {
-    id: number;
+    id: string;
     content: string;
     createdAt: number;
     isPersonalized: number;

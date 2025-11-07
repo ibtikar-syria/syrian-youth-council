@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import api from '../services/api';
 
 interface Tag {
-  id: number;
+  id: string;
   name: string;
   nameAr: string;
   description: string | null;
@@ -47,7 +47,7 @@ const ManageTags = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('هل أنت متأكد من حذف هذا الوسم؟')) return;
     
     try {
