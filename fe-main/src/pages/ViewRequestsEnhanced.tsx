@@ -161,13 +161,13 @@ const ViewRequestsEnhanced = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-[#b9a779]/20 text-[#8b7355]';
       case 'analyzing':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-[#06332c]/10 text-[#06332c]';
       case 'grouped':
-        return 'bg-purple-100 text-purple-800';
+        return 'bg-[#d4c5a0]/30 text-[#8b7355]';
       case 'responded':
-        return 'bg-green-100 text-green-800';
+        return 'bg-[#06332c]/20 text-[#06332c]';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -237,17 +237,17 @@ const ViewRequestsEnhanced = () => {
 
       {/* Direct Requests Section */}
       <div className="mb-8">
-        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-blue-600">الطلبات المباشرة (من القادة الشباب)</h2>
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[#06332c]">الطلبات المباشرة (من القادة الشباب)</h2>
         <div className="space-y-4">
           {filteredDirectRequests.length === 0 ? (
             <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-lg text-sm sm:text-base">لا توجد طلبات مباشرة</div>
           ) : (
             filteredDirectRequests.map((request) => (
-              <div key={request.id} className="bg-white p-4 sm:p-6 rounded-lg shadow-md border-r-4 border-blue-500">
+              <div key={request.id} className="bg-white p-4 sm:p-6 rounded-lg shadow-md border-r-4 border-[#b9a779]">
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-bold whitespace-nowrap">
+                      <span className="bg-[#b9a779]/20 text-[#06332c] px-2 py-1 rounded text-xs font-bold whitespace-nowrap">
                         طلب مباشر
                       </span>
                       <h3 className="text-lg sm:text-xl font-bold break-words">{request.title}</h3>
@@ -285,7 +285,7 @@ const ViewRequestsEnhanced = () => {
                   {request.status !== 'responded' && (
                     <button
                       onClick={() => handleRespondToRequest(request)}
-                      className="w-full sm:w-auto bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-md hover:bg-blue-700 text-sm sm:text-base"
+                      className="w-full sm:w-auto bg-[#06332c] text-white px-3 sm:px-4 py-2 rounded-md hover:bg-[#0a4a40] text-sm sm:text-base"
                     >
                       الرد على الطلب
                     </button>
@@ -299,17 +299,17 @@ const ViewRequestsEnhanced = () => {
 
       {/* Grouped Public Requests Section */}
       <div className="mb-8">
-        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-purple-600">الطلبات العامة المجمعة (من الشباب)</h2>
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-[#8b7355]">الطلبات العامة المجمعة (من الشباب)</h2>
         <div className="space-y-4">
           {filteredGroups.length === 0 ? (
             <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-lg text-sm sm:text-base">لا توجد مجموعات</div>
           ) : (
             filteredGroups.map((group) => (
-              <div key={group.id} className="bg-white p-4 sm:p-6 rounded-lg shadow-md border-r-4 border-purple-500">
+              <div key={group.id} className="bg-white p-4 sm:p-6 rounded-lg shadow-md border-r-4 border-[#d4c5a0]">
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-bold whitespace-nowrap">
+                      <span className="bg-[#d4c5a0]/30 text-[#8b7355] px-2 py-1 rounded text-xs font-bold whitespace-nowrap">
                         مجموعة طلبات
                       </span>
                       <h3 className="text-lg sm:text-xl font-bold break-words">{group.title}</h3>
@@ -318,7 +318,7 @@ const ViewRequestsEnhanced = () => {
                       <p className="text-gray-600 text-xs sm:text-sm mb-2 break-words">{group.description}</p>
                     )}
                     {group.tagNameAr && (
-                      <span className="inline-block bg-purple-50 text-purple-700 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm">
+                      <span className="inline-block bg-[#b9a779]/10 text-[#8b7355] px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm">
                         {group.tagNameAr}
                       </span>
                     )}
@@ -330,13 +330,13 @@ const ViewRequestsEnhanced = () => {
                     <div className="text-xl sm:text-2xl font-bold text-gray-800">{group.requestCount}</div>
                     <div className="text-xs sm:text-sm text-gray-600">إجمالي الطلبات</div>
                   </div>
-                  <div className="bg-yellow-50 p-2 sm:p-3 rounded-md">
-                    <div className="text-xl sm:text-2xl font-bold text-yellow-800">{group.pendingCount}</div>
-                    <div className="text-xs sm:text-sm text-yellow-600">قيد الانتظار</div>
+                  <div className="bg-[#b9a779]/10 p-2 sm:p-3 rounded-md">
+                    <div className="text-xl sm:text-2xl font-bold text-[#8b7355]">{group.pendingCount}</div>
+                    <div className="text-xs sm:text-sm text-[#8b7355]">قيد الانتظار</div>
                   </div>
-                  <div className="bg-green-50 p-2 sm:p-3 rounded-md">
-                    <div className="text-xl sm:text-2xl font-bold text-green-800">{group.respondedCount}</div>
-                    <div className="text-xs sm:text-sm text-green-600">تم الرد</div>
+                  <div className="bg-[#06332c]/10 p-2 sm:p-3 rounded-md">
+                    <div className="text-xl sm:text-2xl font-bold text-[#06332c]">{group.respondedCount}</div>
+                    <div className="text-xs sm:text-sm text-[#06332c]">تم الرد</div>
                   </div>
                 </div>
 
@@ -359,7 +359,7 @@ const ViewRequestsEnhanced = () => {
                     {!group.hasResponse && (
                       <button
                         onClick={() => handleRespondToGroup(group)}
-                        className="w-full sm:w-auto bg-purple-600 text-white px-3 sm:px-4 py-2 rounded-md hover:bg-purple-700 text-sm sm:text-base whitespace-nowrap"
+                        className="w-full sm:w-auto bg-[#b9a779] text-white px-3 sm:px-4 py-2 rounded-md hover:bg-[#a0916a] text-sm sm:text-base whitespace-nowrap"
                       >
                         الرد على المجموعة
                       </button>
@@ -409,7 +409,7 @@ const ViewRequestsEnhanced = () => {
                     setShowRequestsModal(false);
                     setShowResponseModal(true);
                   }}
-                  className="w-full sm:w-auto bg-purple-600 text-white px-4 sm:px-6 py-2 rounded-md hover:bg-purple-700 text-sm sm:text-base"
+                  className="w-full sm:w-auto bg-[#b9a779] text-white px-4 sm:px-6 py-2 rounded-md hover:bg-[#a0916a] text-sm sm:text-base"
                 >
                   الرد على المجموعة
                 </button>
@@ -445,7 +445,7 @@ const ViewRequestsEnhanced = () => {
 
             {selectedGroup && (
               <div className="mb-6">
-                <div className="p-3 sm:p-4 bg-purple-50 rounded-md mb-4">
+                <div className="p-3 sm:p-4 bg-[#d4c5a0]/20 rounded-md mb-4">
                   <h3 className="font-bold text-base sm:text-lg mb-2 break-words">{selectedGroup.title}</h3>
                   {selectedGroup.description && (
                     <p className="text-gray-700 mb-2 text-sm sm:text-base break-words">{selectedGroup.description}</p>
@@ -477,7 +477,7 @@ const ViewRequestsEnhanced = () => {
               <textarea
                 value={responseText}
                 onChange={(e) => setResponseText(e.target.value)}
-                className="w-full px-3 sm:px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 h-32 sm:h-40 text-sm sm:text-base"
+                className="w-full px-3 sm:px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#b9a779] h-32 sm:h-40 text-sm sm:text-base"
                 placeholder="اكتب ردك هنا..."
               />
             </div>
@@ -486,7 +486,7 @@ const ViewRequestsEnhanced = () => {
               <button
                 onClick={handleSubmitResponse}
                 disabled={responding || !responseText.trim()}
-                className="w-full sm:w-auto bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-sm sm:text-base"
+                className="w-full sm:w-auto bg-[#06332c] text-white px-4 sm:px-6 py-2 rounded-md hover:bg-[#0a4a40] disabled:bg-gray-400 disabled:cursor-not-allowed text-sm sm:text-base"
               >
                 {responding ? 'جاري الإرسال...' : 'إرسال الرد'}
               </button>

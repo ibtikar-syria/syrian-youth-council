@@ -43,11 +43,11 @@ const Dashboard = () => {
           <div className="flex items-center gap-2 text-base sm:text-lg">
             <strong className="text-[#06332c]">الحالة:</strong> 
             {user?.isVerified ? (
-              <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full bg-green-100 text-green-700 font-medium text-sm sm:text-base">
+              <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full bg-[#06332c]/10 text-[#06332c] font-medium text-sm sm:text-base">
                 موثق ✓
               </span>
             ) : (
-              <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 font-medium text-sm sm:text-base">
+              <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full bg-[#b9a779]/20 text-[#8b7355] font-medium text-sm sm:text-base">
                 غير موثق
               </span>
             )}

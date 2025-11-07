@@ -69,7 +69,7 @@ const ManageTags = () => {
         <h1 className="text-3xl sm:text-4xl font-bold">إدارة الوسوم</h1>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="w-full sm:w-auto bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-md hover:bg-blue-700 text-sm sm:text-base"
+          className="w-full sm:w-auto bg-[#06332c] text-white px-4 sm:px-6 py-2 rounded-md hover:bg-[#0a4a40] text-sm sm:text-base"
         >
           {showForm ? 'إلغاء' : 'إضافة وسم جديد'}
         </button>
@@ -112,7 +112,7 @@ const ManageTags = () => {
 
             <button
               type="submit"
-              className="w-full sm:w-auto bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-md hover:bg-blue-700 text-sm sm:text-base"
+              className="w-full sm:w-auto bg-[#06332c] text-white px-4 sm:px-6 py-2 rounded-md hover:bg-[#0a4a40] text-sm sm:text-base"
             >
               إضافة
             </button>
@@ -135,7 +135,7 @@ const ManageTags = () => {
             )}
             <button
               onClick={() => handleDelete(tag.id)}
-              className="text-red-600 hover:text-red-800 text-xs sm:text-sm"
+              className="text-[#8b4513] hover:text-[#a0522d] text-xs sm:text-sm"
             >
               حذف
             </button>

@@ -85,7 +85,7 @@ const Layout = () => {
                   </span>
                   <button
                     onClick={logout}
-                    className="hidden sm:block bg-red-500 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-red-600 transition-all duration-200 font-medium shadow-sm hover:shadow-md text-sm sm:text-base"
+                    className="hidden sm:block bg-[#8b4513] text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-[#a0522d] transition-all duration-200 font-medium shadow-sm hover:shadow-md text-sm sm:text-base"
                   >
                     تسجيل الخروج
                   </button>
@@ -187,7 +187,7 @@ const Layout = () => {
                     logout();
                     closeMobileMenu();
                   }}
-                  className="w-full text-right px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 transition-all duration-200 font-medium"
+                  className="w-full text-right px-4 py-2 rounded-lg text-[#8b4513] hover:bg-[#8b4513]/10 transition-all duration-200 font-medium"
                 >
                   تسجيل الخروج
                 </button>

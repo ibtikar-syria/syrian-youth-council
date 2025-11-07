@@ -55,13 +55,13 @@ const MyRequests = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-[#b9a779]/20 text-[#8b7355]';
       case 'analyzing':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-[#06332c]/10 text-[#06332c]';
       case 'grouped':
-        return 'bg-purple-100 text-purple-800';
+        return 'bg-[#d4c5a0]/30 text-[#8b7355]';
       case 'responded':
-        return 'bg-green-100 text-green-800';
+        return 'bg-[#06332c]/20 text-[#06332c]';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -121,19 +121,19 @@ const MyRequests = () => {
               {request.response && (
                 <div className="mt-4 pt-4 border-t border-gray-200">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-2">
-                    <h4 className="font-bold text-green-700 flex items-center gap-2 text-sm sm:text-base">
+                    <h4 className="font-bold text-[#06332c] flex items-center gap-2 text-sm sm:text-base">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                       الرد من الوزارة
                     </h4>
                     {request.response.isPersonalized === 1 && (
-                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full whitespace-nowrap self-start">
+                      <span className="text-xs bg-[#d4c5a0]/30 text-[#8b7355] px-2 py-1 rounded-full whitespace-nowrap self-start">
                         رد مخصص
                       </span>
                     )}
                   </div>
-                  <div className="bg-green-50 p-3 sm:p-4 rounded-md">
+                  <div className="bg-[#06332c]/5 p-3 sm:p-4 rounded-md">
                     <p className="text-gray-800 whitespace-pre-wrap text-sm sm:text-base">{request.response.content}</p>
                     <p className="text-gray-500 text-xs mt-2">
                       تاريخ الرد: {new Date(request.response.createdAt * 1000).toLocaleDateString('en-GB')}

@@ -117,7 +117,7 @@ const ManageUsers = () => {
             setShowForm(!showForm);
             if (showForm) handleCancelEdit();
           }}
-          className="w-full sm:w-auto bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-md hover:bg-blue-700 text-sm sm:text-base"
+          className="w-full sm:w-auto bg-[#06332c] text-white px-4 sm:px-6 py-2 rounded-md hover:bg-[#0a4a40] text-sm sm:text-base"
         >
           {showForm ? 'إلغاء' : 'إضافة مستخدم جديد'}
         </button>
@@ -180,7 +180,7 @@ const ManageUsers = () => {
 
             <button
               type="submit"
-              className="w-full sm:w-auto bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-md hover:bg-blue-700 text-sm sm:text-base"
+              className="w-full sm:w-auto bg-[#06332c] text-white px-4 sm:px-6 py-2 rounded-md hover:bg-[#0a4a40] text-sm sm:text-base"
             >
               {editingUser ? 'تحديث' : 'إضافة'}
             </button>
@@ -203,13 +203,13 @@ const ManageUsers = () => {
             <div className="flex gap-2">
               <button
                 onClick={() => handleEdit(user)}
-                className="flex-1 text-blue-600 hover:text-blue-800 text-sm py-2 border border-blue-600 rounded"
+                className="flex-1 text-[#06332c] hover:text-[#0a4a40] text-sm py-2 border border-[#06332c] rounded"
               >
-                تعديل
+                عرض التفاصيل
               </button>
               <button
                 onClick={() => handleDelete(user.id)}
-                className="flex-1 text-red-600 hover:text-red-800 text-sm py-2 border border-red-600 rounded"
+                className="flex-1 text-[#8b4513] hover:text-[#a0522d] text-sm py-2 border border-[#8b4513] rounded"
               >
                 حذف
               </button>
@@ -242,15 +242,15 @@ const ManageUsers = () => {
                 <td className="px-4 md:px-6 py-4 text-sm">
                   <button
                     onClick={() => handleEdit(user)}
-                    className="text-blue-600 hover:text-blue-800 mr-4"
+                    className="text-[#06332c] hover:text-[#0a4a40] mr-4"
                   >
-                    تعديل
+                    ✏️ تعديل
                   </button>
                   <button
                     onClick={() => handleDelete(user.id)}
-                    className="text-red-600 hover:text-red-800"
+                    className="text-[#8b4513] hover:text-[#a0522d]"
                   >
-                    حذف
+                    🗑️ حذف
                   </button>
                 </td>
               </tr>
