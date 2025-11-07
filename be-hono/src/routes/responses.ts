@@ -6,6 +6,7 @@ import { responses, personalizedResponses, requests, requestGroups, REQUEST_STAT
 import { createResponseSchema } from '../schemas/validation';
 import { authMiddleware, requireMinistryOrAdmin, type Env, type Variables } from '../middleware/auth';
 import { AIService } from '../utils/ai';
+import { generateId } from '../utils/id';
 
 const responsesRouter = new Hono<{ Bindings: Env; Variables: Variables }>();
 
@@ -27,6 +28,7 @@ responsesRouter.post(
       const newResponse = await db
         .insert(responses)
         .values({
+          id: generateId(),
           requestId: requestId || null,
           groupId: groupId || null,
           responderId,
@@ -60,6 +62,7 @@ responsesRouter.post(
                 await db
                   .insert(personalizedResponses)
                   .values({
+                    id: generateId(),
                     requestId: request.id,
                     responseId: newResponse.id,
                     content: personalizedContent,
@@ -102,7 +105,7 @@ responsesRouter.post(
 // Get responses for a request
 responsesRouter.get('/request/:requestId', authMiddleware, async (c) => {
   try {
-    const requestId = parseInt(c.req.param('requestId'));
+    const requestId = c.req.param('requestId');
     const db = getDb(c.env.DB);
 
     // Get direct response

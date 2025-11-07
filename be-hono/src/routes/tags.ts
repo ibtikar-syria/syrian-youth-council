@@ -5,6 +5,7 @@ import { getDb } from '../db';
 import { tags } from '../db/schema';
 import { createTagSchema, updateTagSchema } from '../schemas/validation';
 import { authMiddleware, requireAdmin, requireMinistryOrAdmin, type Env, type Variables } from '../middleware/auth';
+import { generateId } from '../utils/id';
 
 const tagsRouter = new Hono<{ Bindings: Env; Variables: Variables }>();
 
@@ -51,6 +52,7 @@ tagsRouter.post(
       const newTag = await db
         .insert(tags)
         .values({
+          id: generateId(),
           name,
           nameAr,
           description: description || null,
@@ -78,7 +80,7 @@ tagsRouter.put(
   zValidator('json', updateTagSchema),
   async (c) => {
     try {
-      const tagId = parseInt(c.req.param('id'));
+      const tagId = c.req.param('id');
       const updates = c.req.valid('json');
       const db = getDb(c.env.DB);
 
@@ -107,7 +109,7 @@ tagsRouter.put(
 // Delete a tag (admin only)
 tagsRouter.delete('/:id', authMiddleware, requireAdmin, async (c) => {
   try {
-    const tagId = parseInt(c.req.param('id'));
+    const tagId = c.req.param('id');
     const db = getDb(c.env.DB);
 
     await db.delete(tags).where(eq(tags.id, tagId)).run();

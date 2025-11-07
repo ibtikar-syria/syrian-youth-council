@@ -47,8 +47,8 @@ export const filterRequestsSchema = z.object({
 // Response schemas
 export const createResponseSchema = z.object({
   content: z.string().min(10, 'Response must be at least 10 characters'),
-  requestId: z.number().int().positive().optional(),
-  groupId: z.number().int().positive().optional(),
+  requestId: z.string().uuid().optional(),
+  groupId: z.string().uuid().optional(),
 }).refine(data => data.requestId || data.groupId, {
   message: 'Either requestId or groupId must be provided',
 });

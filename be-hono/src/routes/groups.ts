@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { getDb } from '../db';
 import { requestGroups, requests, tags, users, responses, personalizedResponses } from '../db/schema';
 import { authMiddleware, requireMinistryOrAdmin, type Env, type Variables } from '../middleware/auth';
+import { generateId } from '../utils/id';
 
 const groupsRouter = new Hono<{ Bindings: Env; Variables: Variables }>();
 
@@ -67,7 +68,7 @@ groupsRouter.get('/', authMiddleware, requireMinistryOrAdmin, async (c) => {
 // Get single group with all its requests
 groupsRouter.get('/:id', authMiddleware, requireMinistryOrAdmin, async (c) => {
   try {
-    const groupId = parseInt(c.req.param('id'));
+    const groupId = c.req.param('id');
     const db = getDb(c.env.DB);
 
     // Get group info
@@ -143,8 +144,8 @@ groupsRouter.post(
   zValidator('json', z.object({
     title: z.string().min(5),
     description: z.string().optional(),
-    primaryTagId: z.number().int().positive().optional(),
-    requestIds: z.array(z.number().int().positive()),
+    primaryTagId: z.string().uuid().optional(),
+    requestIds: z.array(z.string().uuid()),
   })),
   async (c) => {
     try {
@@ -155,6 +156,7 @@ groupsRouter.post(
       const newGroup = await db
         .insert(requestGroups)
         .values({
+          id: generateId(),
           title,
           description,
           primaryTagId: primaryTagId || null,
@@ -190,11 +192,11 @@ groupsRouter.put(
   zValidator('json', z.object({
     title: z.string().min(5).optional(),
     description: z.string().optional(),
-    primaryTagId: z.number().int().positive().optional().nullable(),
+    primaryTagId: z.string().uuid().optional().nullable(),
   })),
   async (c) => {
     try {
-      const groupId = parseInt(c.req.param('id'));
+      const groupId = c.req.param('id');
       const updates = c.req.valid('json');
       const db = getDb(c.env.DB);
 
@@ -223,7 +225,7 @@ groupsRouter.put(
 // Delete group (doesn't delete requests, just ungroups them)
 groupsRouter.delete('/:id', authMiddleware, requireMinistryOrAdmin, async (c) => {
   try {
-    const groupId = parseInt(c.req.param('id'));
+    const groupId = c.req.param('id');
     const db = getDb(c.env.DB);
 
     // Ungroup all requests

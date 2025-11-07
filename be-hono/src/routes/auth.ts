@@ -5,6 +5,7 @@ import { getDb } from '../db';
 import { users, USER_ROLES } from '../db/schema';
 import { registerSchema, loginSchema } from '../schemas/validation';
 import { hashPassword, comparePassword, generateToken } from '../utils/auth';
+import { generateId } from '../utils/id';
 import { rateLimit } from '../middleware/rateLimit';
 import type { Env } from '../middleware/auth';
 
@@ -38,6 +39,7 @@ auth.post('/register', zValidator('json', registerSchema), async (c) => {
     const newUser = await db
       .insert(users)
       .values({
+        id: generateId(),
         email,
         password: hashedPassword,
         name,

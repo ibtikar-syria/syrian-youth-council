@@ -6,6 +6,7 @@ import { requests, users, tags, requestTags, responses, personalizedResponses, R
 import { createRequestSchema, filterRequestsSchema } from '../schemas/validation';
 import { authMiddleware, requireMinistryOrAdmin, type Env, type Variables } from '../middleware/auth';
 import { AIService } from '../utils/ai';
+import { generateId } from '../utils/id';
 
 const requestsRouter = new Hono<{ Bindings: Env; Variables: Variables }>();
 
@@ -32,6 +33,7 @@ requestsRouter.post(
       const newRequest = await db
         .insert(requests)
         .values({
+          id: generateId(),
           userId,
           type: requestType,
           title,
@@ -59,6 +61,7 @@ requestsRouter.post(
                 tag = await db
                   .insert(tags)
                   .values({
+                    id: generateId(),
                     name: tagName,
                     nameAr: arabicName,
                     createdBy: 'ai',
@@ -71,6 +74,7 @@ requestsRouter.post(
               await db
                 .insert(requestTags)
                 .values({
+                  id: generateId(),
                   requestId: newRequest.id,
                   tagId: tag.id,
                   confidence: 80,
@@ -142,7 +146,7 @@ requestsRouter.get(
       const conditions = [eq(requests.type, REQUEST_TYPES.DIRECT)];
       if (status) conditions.push(eq(requests.status, status));
       if (type) conditions.push(eq(requests.type, type));
-      if (filterUserId) conditions.push(eq(requests.userId, parseInt(filterUserId)));
+      if (filterUserId) conditions.push(eq(requests.userId, filterUserId));
 
       query = query.where(and(...conditions)) as any;
 
@@ -217,7 +221,7 @@ requestsRouter.get('/my-requests', authMiddleware, async (c) => {
         // Check for personalized response (from group)
         const personalizedResponseData = await db
           .select({
-            id: sql<number>`${personalizedResponses.id}`,
+            id: sql<string>`${personalizedResponses.id}`,
             content: sql<string>`${personalizedResponses.content}`,
             createdAt: sql<number>`${personalizedResponses.createdAt}`,
             isPersonalized: sql<number>`1`,
@@ -232,7 +236,7 @@ requestsRouter.get('/my-requests', authMiddleware, async (c) => {
           // Check for direct response
           const directResponseData = await db
             .select({
-              id: sql<number>`${responses.id}`,
+              id: sql<string>`${responses.id}`,
               content: sql<string>`${responses.content}`,
               createdAt: sql<number>`${responses.createdAt}`,
               isPersonalized: sql<number>`0`,
@@ -264,7 +268,7 @@ requestsRouter.get('/my-requests', authMiddleware, async (c) => {
 // Get single request by ID
 requestsRouter.get('/:id', authMiddleware, async (c) => {
   try {
-    const requestId = parseInt(c.req.param('id'));
+    const requestId = c.req.param('id');
     const userId = c.get('userId');
     const userRole = c.get('userRole');
     const db = getDb(c.env.DB);

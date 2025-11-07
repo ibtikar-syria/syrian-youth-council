@@ -10,7 +10,7 @@ export type Env = {
 };
 
 export type Variables = {
-  userId: number;
+  userId: string;
   userRole: string;
 };
 

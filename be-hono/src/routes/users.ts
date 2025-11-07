@@ -6,6 +6,7 @@ import { users } from '../db/schema';
 import { createUserSchema, updateUserSchema } from '../schemas/validation';
 import { authMiddleware, requireAdmin, type Env, type Variables } from '../middleware/auth';
 import { hashPassword } from '../utils/auth';
+import { generateId } from '../utils/id';
 
 const usersRouter = new Hono<{ Bindings: Env; Variables: Variables }>();
 
@@ -63,6 +64,7 @@ usersRouter.post(
       const newUser = await db
         .insert(users)
         .values({
+          id: generateId(),
           email,
           password: hashedPassword,
           name,
@@ -98,7 +100,7 @@ usersRouter.put(
   zValidator('json', updateUserSchema),
   async (c) => {
     try {
-      const userId = parseInt(c.req.param('id'));
+      const userId = c.req.param('id');
       const updates = c.req.valid('json');
       const db = getDb(c.env.DB);
 
@@ -133,7 +135,7 @@ usersRouter.put(
 // Delete user (admin only)
 usersRouter.delete('/:id', authMiddleware, requireAdmin, async (c) => {
   try {
-    const userId = parseInt(c.req.param('id'));
+    const userId = c.req.param('id');
     const currentUserId = c.get('userId');
     const db = getDb(c.env.DB);
 

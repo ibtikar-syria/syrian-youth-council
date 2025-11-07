@@ -17,6 +17,7 @@ import { getDb } from './db';
 import { requests, REQUEST_STATUS, REQUEST_TYPES } from './db/schema';
 import { eq, and, sql } from 'drizzle-orm';
 import { AIService } from './utils/ai';
+import { generateId } from './utils/id';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -81,7 +82,7 @@ app.post('/api/admin/trigger-grouping', async (c) => {
       return c.json({ message: 'No ungrouped requests found', processed: 0 });
     }
 
-    const processed = new Set<number>();
+    const processed = new Set<string>();
 
     for (const request of ungroupedRequests) {
       if (processed.has(request.id)) continue;
@@ -250,7 +251,7 @@ export default {
       }
 
       // Group processing: find similar requests and create groups
-      const processed = new Set<number>();
+      const processed = new Set<string>();
 
       for (const request of ungroupedRequests) {
         if (processed.has(request.id)) continue;
