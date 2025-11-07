@@ -35,44 +35,6 @@ const Layout = () => {
                   >
                     لوحة التحكم
                   </Link>
-                  <Link 
-                    to="/my-requests" 
-                    className="px-3 py-2 rounded-lg text-gray-700 hover:text-[#06332c] hover:bg-[#b9a779]/10 transition-all duration-200 font-medium"
-                  >
-                    طلباتي
-                  </Link>
-                  <Link 
-                    to="/create-request" 
-                    className="px-3 py-2 rounded-lg text-gray-700 hover:text-[#06332c] hover:bg-[#b9a779]/10 transition-all duration-200 font-medium"
-                  >
-                    طلب جديد
-                  </Link>
-                  
-                  {(user?.role === 'admin' || user?.role === 'ministry_staff') && (
-                    <Link 
-                      to="/view-requests" 
-                      className="px-3 py-2 rounded-lg text-gray-700 hover:text-[#06332c] hover:bg-[#b9a779]/10 transition-all duration-200 font-medium"
-                    >
-                      عرض الطلبات
-                    </Link>
-                  )}
-                  
-                  {user?.role === 'admin' && (
-                    <>
-                      <Link 
-                        to="/manage-tags" 
-                        className="px-3 py-2 rounded-lg text-gray-700 hover:text-[#06332c] hover:bg-[#b9a779]/10 transition-all duration-200 font-medium"
-                      >
-                        إدارة الوسوم
-                      </Link>
-                      <Link 
-                        to="/manage-users" 
-                        className="px-3 py-2 rounded-lg text-gray-700 hover:text-[#06332c] hover:bg-[#b9a779]/10 transition-all duration-200 font-medium"
-                      >
-                        إدارة المستخدمين
-                      </Link>
-                    </>
-                  )}
                 </div>
               )}
             </div>
@@ -134,49 +96,6 @@ const Layout = () => {
               >
                 لوحة التحكم
               </Link>
-              <Link 
-                to="/my-requests" 
-                className="block px-4 py-2 rounded-lg text-gray-700 hover:text-[#06332c] hover:bg-[#b9a779]/10 transition-all duration-200 font-medium"
-                onClick={closeMobileMenu}
-              >
-                طلباتي
-              </Link>
-              <Link 
-                to="/create-request" 
-                className="block px-4 py-2 rounded-lg text-gray-700 hover:text-[#06332c] hover:bg-[#b9a779]/10 transition-all duration-200 font-medium"
-                onClick={closeMobileMenu}
-              >
-                طلب جديد
-              </Link>
-              
-              {(user?.role === 'admin' || user?.role === 'ministry_staff') && (
-                <Link 
-                  to="/view-requests" 
-                  className="block px-4 py-2 rounded-lg text-gray-700 hover:text-[#06332c] hover:bg-[#b9a779]/10 transition-all duration-200 font-medium"
-                  onClick={closeMobileMenu}
-                >
-                  عرض الطلبات
-                </Link>
-              )}
-              
-              {user?.role === 'admin' && (
-                <>
-                  <Link 
-                    to="/manage-tags" 
-                    className="block px-4 py-2 rounded-lg text-gray-700 hover:text-[#06332c] hover:bg-[#b9a779]/10 transition-all duration-200 font-medium"
-                    onClick={closeMobileMenu}
-                  >
-                    إدارة الوسوم
-                  </Link>
-                  <Link 
-                    to="/manage-users" 
-                    className="block px-4 py-2 rounded-lg text-gray-700 hover:text-[#06332c] hover:bg-[#b9a779]/10 transition-all duration-200 font-medium"
-                    onClick={closeMobileMenu}
-                  >
-                    إدارة المستخدمين
-                  </Link>
-                </>
-              )}
               
               <div className="pt-2 border-t border-gray-200 mt-2">
                 <div className="px-4 py-2 text-gray-600 text-sm">
