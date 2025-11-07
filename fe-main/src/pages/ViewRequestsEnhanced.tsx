@@ -275,7 +275,7 @@ const ViewRequestsEnhanced = () => {
 
                 <div className="flex justify-between items-center">
                   <p className="text-gray-500 text-sm">
-                    {new Date(request.createdAt).toLocaleDateString('ar-SA', {
+                    {new Date(request.createdAt).toLocaleDateString('en-GB', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric',
@@ -342,7 +342,7 @@ const ViewRequestsEnhanced = () => {
 
                 <div className="flex justify-between items-center">
                   <p className="text-gray-500 text-sm">
-                    {new Date(group.createdAt).toLocaleDateString('ar-SA', {
+                    {new Date(group.createdAt).toLocaleDateString('en-GB', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric',
@@ -396,7 +396,7 @@ const ViewRequestsEnhanced = () => {
                   </div>
                   <p className="text-gray-700 text-sm whitespace-pre-wrap">{req.content}</p>
                   <p className="text-xs text-gray-500 mt-2">
-                    {new Date(req.createdAt).toLocaleDateString('ar-SA')}
+                    {new Date(req.createdAt).toLocaleDateString('en-GB')}
                   </p>
                 </div>
               ))}

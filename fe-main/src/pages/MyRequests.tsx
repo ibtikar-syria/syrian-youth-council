@@ -115,7 +115,7 @@ const MyRequests = () => {
               )}
 
               <p className="text-gray-500 text-sm mb-4">
-                تاريخ الإرسال: {new Date(request.createdAt).toLocaleDateString('ar-SA')}
+                تاريخ الإرسال: {new Date(request.createdAt).toLocaleDateString('en-GB')}
               </p>
 
               {request.response && (
@@ -136,7 +136,7 @@ const MyRequests = () => {
                   <div className="bg-green-50 p-4 rounded-md">
                     <p className="text-gray-800 whitespace-pre-wrap">{request.response.content}</p>
                     <p className="text-gray-500 text-xs mt-2">
-                      تاريخ الرد: {new Date(request.response.createdAt * 1000).toLocaleDateString('ar-SA')}
+                      تاريخ الرد: {new Date(request.response.createdAt * 1000).toLocaleDateString('en-GB')}
                     </p>
                   </div>
                 </div>
