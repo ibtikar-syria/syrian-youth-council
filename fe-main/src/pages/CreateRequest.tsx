@@ -80,7 +80,11 @@ const CreateRequest = () => {
               placeholder="اكتب عنواناً واضحاً لطلبك"
               required
               minLength={5}
+              maxLength={100}
             />
+            <div className="text-xs text-gray-500 mt-1 text-right">
+              {title.length}/100 حرف ({100 - title.length} متبقي)
+            </div>
           </div>
 
           <div className="mb-6">
