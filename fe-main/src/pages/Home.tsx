@@ -35,10 +35,10 @@ const Home = () => {
 
         {isAuthenticated && (
           <Link
-            to="/create-request"
+            to="/dashboard"
             className="inline-block bg-linear-to-r from-[#06332c] to-[#0a4a40] text-white px-8 sm:px-10 py-3 sm:py-4 rounded-xl text-base sm:text-lg font-semibold hover:from-[#0a4a40] hover:to-[#06332c] transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
-            أرسل طلبك الآن
+            لوحة التحكّم
           </Link>
         )}
       </div>
