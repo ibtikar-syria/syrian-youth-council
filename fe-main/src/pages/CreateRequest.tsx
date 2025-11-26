@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { useAuthStore } from '../stores/authStore';
 
 const CreateRequest = () => {
+  const { user } = useAuthStore();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [type, setType] = useState('public_request');
@@ -10,6 +12,9 @@ const CreateRequest = () => {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  
+  // Check if user is a basic user
+  const isBasicUser = user?.role === 'basic_user';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,17 +56,19 @@ const CreateRequest = () => {
         )}
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2 text-sm sm:text-base">نوع الطلب</label>
-            <select
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              className="w-full px-3 sm:px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#06332c] text-sm sm:text-base"
-            >
-              <option value="public_request">طلب عام</option>
-              <option value="direct_request">طلب مباشر (للقيادات الشبابية)</option>
-            </select>
-          </div>
+          {!isBasicUser && (
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2 text-sm sm:text-base">نوع الطلب</label>
+              <select
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                className="w-full px-3 sm:px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#06332c] text-sm sm:text-base"
+              >
+                <option value="public_request">طلب عام</option>
+                <option value="direct_request">طلب مباشر (للقيادات الشبابية)</option>
+              </select>
+            </div>
+          )}
 
           <div className="mb-4">
             <label className="block text-gray-700 mb-2 text-sm sm:text-base">عنوان الطلب</label>
