@@ -26,6 +26,12 @@ interface Group {
   createdAt: string;
 }
 
+interface Tag {
+  id: string;
+  name: string;
+  nameAr: string;
+}
+
 type FilterStatus = 'all' | 'pending' | 'analyzing' | 'grouped' | 'responded';
 
 const ViewRequestsEnhanced = () => {
@@ -34,6 +40,9 @@ const ViewRequestsEnhanced = () => {
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [availableTags, setAvailableTags] = useState<Tag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [showTagFilter, setShowTagFilter] = useState(false);
   
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
@@ -49,6 +58,10 @@ const ViewRequestsEnhanced = () => {
     fetchData();
   }, [filterStatus]);
 
+  useEffect(() => {
+    fetchTags();
+  }, []);
+
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -57,6 +70,15 @@ const ViewRequestsEnhanced = () => {
       console.error('Failed to fetch data');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchTags = async () => {
+    try {
+      const response = await api.get('/tags');
+      setAvailableTags(response.data.tags);
+    } catch (err) {
+      console.error('Failed to fetch tags');
     }
   };
 
@@ -192,18 +214,51 @@ const ViewRequestsEnhanced = () => {
     }
   };
 
-  const filteredDirectRequests = directRequests.filter(req =>
-    searchQuery === '' ||
-    req.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    req.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    req.userName.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const handleToggleTag = (tagId: string) => {
+    setSelectedTags(prev =>
+      prev.includes(tagId)
+        ? prev.filter(id => id !== tagId)
+        : [...prev, tagId]
+    );
+  };
 
-  const filteredGroups = groups.filter(group =>
-    searchQuery === '' ||
-    group.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    group.description?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const handleClearTags = () => {
+    setSelectedTags([]);
+  };
+
+  const filteredDirectRequests = directRequests.filter(req => {
+    // Search query filter
+    const matchesSearch = searchQuery === '' ||
+      req.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      req.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      req.userName.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    // Tag filter
+    const matchesTags = selectedTags.length === 0 ||
+      (req.tags && req.tags.some(tag => {
+        const matchingTag = availableTags.find(t => 
+          t.name === tag.tagName || t.nameAr === tag.tagNameAr
+        );
+        return matchingTag && selectedTags.includes(matchingTag.id);
+      }));
+    
+    return matchesSearch && matchesTags;
+  });
+
+  const filteredGroups = groups.filter(group => {
+    // Search query filter
+    const matchesSearch = searchQuery === '' ||
+      group.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      group.description?.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    // Tag filter - match groups by their primary tag
+    const matchesTags = selectedTags.length === 0 ||
+      (group.tagNameAr && availableTags.some(tag => 
+        tag.nameAr === group.tagNameAr && selectedTags.includes(tag.id)
+      ));
+    
+    return matchesSearch && matchesTags;
+  });
 
   if (loading) {
     return <div className="text-center py-12">جاري التحميل...</div>;
@@ -236,7 +291,50 @@ const ViewRequestsEnhanced = () => {
             <option value="grouped">مجمّع</option>
             <option value="responded">تم الرد</option>
           </select>
+
+          <button
+            onClick={() => setShowTagFilter(!showTagFilter)}
+            className="w-full sm:w-auto px-3 sm:px-4 py-2 border rounded-md bg-[#06332c] text-white hover:bg-[#0a4a40] focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm sm:text-base whitespace-nowrap"
+          >
+            تصفية حسب الوسوم {selectedTags.length > 0 && `(${selectedTags.length})`}
+          </button>
         </div>
+
+        {/* Tag Filter Section */}
+        {showTagFilter && (
+          <div className="mb-4 p-4 bg-gray-50 rounded-lg border">
+            <div className="flex flex-row items-center justify-between mb-3">
+              <h3 className="font-bold text-sm sm:text-base">اختر الوسوم:</h3>
+              {selectedTags.length > 0 && (
+                <button
+                  onClick={handleClearTags}
+                  className="text-xs sm:text-sm text-red-600 hover:text-red-800"
+                >
+                  مسح الكل
+                </button>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {availableTags.length === 0 ? (
+                <p className="text-gray-500 text-sm">لا توجد وسوم متاحة</p>
+              ) : (
+                availableTags.map((tag) => (
+                  <button
+                    key={tag.id}
+                    onClick={() => handleToggleTag(tag.id)}
+                    className={`px-3 py-1.5 rounded-full text-xs sm:text-sm transition-colors ${
+                      selectedTags.includes(tag.id)
+                        ? 'bg-[#06332c] text-white'
+                        : 'bg-white text-gray-700 border hover:bg-gray-100'
+                    }`}
+                  >
+                    {tag.nameAr || tag.name}
+                  </button>
+                ))
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Direct Requests Section */}
