@@ -43,6 +43,7 @@ const ViewRequestsEnhanced = () => {
   const [responding, setResponding] = useState(false);
   const [showResponseModal, setShowResponseModal] = useState(false);
   const [showRequestsModal, setShowRequestsModal] = useState(false);
+  const [loadingGroupDetails, setLoadingGroupDetails] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -79,6 +80,7 @@ const ViewRequestsEnhanced = () => {
   };
 
   const fetchGroupDetails = async (groupId: string, forViewing: boolean = false) => {
+    setLoadingGroupDetails(true);
     try {
       const response = await api.get(`/groups/${groupId}`);
       setGroupRequests(response.data.group.requests);
@@ -101,6 +103,8 @@ const ViewRequestsEnhanced = () => {
       }
     } catch (err) {
       alert('فشل تحميل تفاصيل المجموعة');
+    } finally {
+      setLoadingGroupDetails(false);
     }
   };
 
@@ -352,16 +356,18 @@ const ViewRequestsEnhanced = () => {
                   <div className="flex flex-col sm:flex-row gap-2">
                     <button
                       onClick={() => handleViewGroupRequests(group)}
-                      className="w-full sm:w-auto bg-gray-200 text-gray-700 px-3 sm:px-4 py-2 rounded-md hover:bg-gray-300 text-sm sm:text-base whitespace-nowrap"
+                      disabled={loadingGroupDetails}
+                      className="w-full sm:w-auto bg-gray-200 text-gray-700 px-3 sm:px-4 py-2 rounded-md hover:bg-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed text-sm sm:text-base whitespace-nowrap"
                     >
-                      عرض الطلبات ({group.requestCount})
+                      {loadingGroupDetails ? 'جاري التحميل...' : `عرض الطلبات (${group.requestCount})`}
                     </button>
                     {!group.hasResponse && (
                       <button
                         onClick={() => handleRespondToGroup(group)}
-                        className="w-full sm:w-auto bg-[#b9a779] text-white px-3 sm:px-4 py-2 rounded-md hover:bg-[#a0916a] text-sm sm:text-base whitespace-nowrap"
+                        disabled={loadingGroupDetails}
+                        className="w-full sm:w-auto bg-[#b9a779] text-white px-3 sm:px-4 py-2 rounded-md hover:bg-[#a0916a] disabled:bg-gray-300 disabled:cursor-not-allowed text-sm sm:text-base whitespace-nowrap"
                       >
-                        الرد على المجموعة
+                        {loadingGroupDetails ? 'جاري التحميل...' : 'الرد على المجموعة'}
                       </button>
                     )}
                   </div>
